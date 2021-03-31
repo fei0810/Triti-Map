@@ -8,7 +8,7 @@ rule rnaGATK4ReplaceRG:
         java_p = java_parameter,
         info = "-LB lib1 -PL illumina -PU {bulk}_{bulktype} -SM {bulk}_{bulktype} -ID {bulk}_{bulktype} -SO coordinate --CREATE_INDEX false"
     output:
-        dir_path+"/04_GATKout/{bulk}_{bulktype}_reprg.bam"
+        temp(dir_path+"/04_GATKout/{bulk}_{bulktype}_reprg.bam")
     log:
         dir_path+"/logs/step3_{bulk}_{bulktype}_rna_gatkreprg.log"
     message: "Replace ReadsGroups {input} with GATK4"
@@ -21,7 +21,7 @@ rule rnaGATK4Markdup:
         java_p = java_parameter,
         info = "--REMOVE_DUPLICATES true --USE_JDK_DEFLATER true --USE_JDK_INFLATER true --CREATE_INDEX false --VALIDATION_STRINGENCY SILENT"
     output:
-        bam = dir_path+"/04_GATKout/{bulk}_{bulktype}_rmdup.bam",
+        bam = temp(dir_path+"/04_GATKout/{bulk}_{bulktype}_rmdup.bam"),
         metrics = dir_path+"/04_GATKout/{bulk}_{bulktype}.rmdup.metrics"
     log:
         dir_path+"/logs/{bulk}_{bulktype}_rna_gatkrmdup.log"
@@ -31,9 +31,8 @@ rule rnaGATK4Markdup:
 rule rnaFilter2Uniqmap:
     input:
         dir_path+"/04_GATKout/{bulk}_{bulktype}_rmdup.bam"
-    #params:
     output:
-        dir_path+"/04_GATKout/{bulk}_{bulktype}_uniqmap.bam"
+        temp(dir_path+"/04_GATKout/{bulk}_{bulktype}_uniqmap.bam")
     log:
         dir_path+"/logs/{bulk}_{bulktype}_rna_uniqmap.log"
     message: "\nFilter {input} to uniqmap and prepore pair with sambamba\n"
@@ -46,7 +45,7 @@ rule rnaGATK4FixMateInfo:
         java_p = java_parameter,
         info = "-SO coordinate --CREATE_INDEX false"
     output:
-        dir_path+"/04_GATKout/{bulk}_{bulktype}_fix.bam"
+        temp(dir_path+"/04_GATKout/{bulk}_{bulktype}_fix.bam")
     log:
         dir_path+"/logs/{bulk}_{bulktype}_rna_gatkfix.log"
     message: "\nFix Mate Information {input} with GATK4\n"

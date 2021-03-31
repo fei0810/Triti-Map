@@ -60,6 +60,8 @@ snpindex:
   filter_probs: 0.75
   # SNP fesher test filter pvalue, used to filter candidate SNP. No change needed!
   fisher_p: 0.0001
+  # min length of candidate region, for Triticeae species 1000000(1Mb) is suggested. No change needed!
+  min_length: 1000000
 
 ########################################
 ###### Assemble Module Parameters ######

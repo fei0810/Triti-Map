@@ -41,7 +41,7 @@ rule unmap_BlastAnnoEBI:
         join(dir_path+"/logs", "{bulk}_unmap_BlastAnnoEBI.log")
     shell:"""
     set +e
-    bash {params.scriptdir}/format_blastout.sh {input} {params.email} scripts/ncbiblast.py scripts/json2tsv.R {params.database} {output} > {log} 2>&1
+    bash {params.scriptdir}/format_blastout.sh {input} {params.email} {params.scriptdir}/ncbiblast.py {params.scriptdir}/json2tsv.R {params.database} {output} > {log} 2>&1
     exitcode=$?
     if [ $exitcode -eq 1 ]
     then

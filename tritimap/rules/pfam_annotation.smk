@@ -41,7 +41,7 @@ rule unmap_PfamAnnoEBI:
         join(dir_path+"/logs", "{bulk}_unmap_PfamAnnoEBI.log")
     shell:"""
     set +e
-    bash {params.scriptdir}/format_pfamout.sh {input} {params.email} scripts/hmmer3_hmmscan.py {output.pfamanno} {output.pfamseq} > {log} 2>&1
+    bash {params.scriptdir}/format_pfamout.sh {input} {params.email} {params.scriptdir}/hmmer3_hmmscan.py {output.pfamanno} {output.pfamseq} > {log} 2>&1
     exitcode=$?
     if [ $exitcode -eq 1 ]
     then

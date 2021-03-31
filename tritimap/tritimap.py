@@ -26,13 +26,14 @@ def log_exception(msg):
 
 
 # command line
+
+
 @click.group(context_settings=dict(help_option_names=["-h", "--help"]))
 @click.version_option(__version__)
 @click.pass_context
 def cli(obj):
     """Triti-Map: A Snakemake-based workflow for gene mapping and finding new gene in Triticeae species. For more information, see: https://github.com/fei0810/Triti-Map
     """
-
 
 def get_snakefile(file="Snakefile"):
     sf = os.path.join(os.path.dirname(os.path.abspath(__file__)), file)

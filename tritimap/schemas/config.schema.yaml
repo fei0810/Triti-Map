@@ -64,6 +64,8 @@ properties:
         type: number
       filter_probs:
         type: number
+      min_length:
+        type: number
       fisher_p:
         type: number
     required:
@@ -71,6 +73,7 @@ properties:
       - bulksize
       - winsize
       - filter_probs
+      - min_length
       - fisher_p
 
   merge_lib:

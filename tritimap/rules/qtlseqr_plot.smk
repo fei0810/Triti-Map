@@ -10,6 +10,7 @@ rule QTLseqr_plot:
         winsize = config['snpindex']['winsize'],
         filterprobs = config['snpindex']['filter_probs'],
         pvalue = config['snpindex']['fisher_p'],
+        min_length = config['snpindex']['min_length'],
         dirname = dir_path
     output:
         qtlout = join(dir_path+"/06_regionout", "_".join(samples.bulk.drop_duplicates())+ "_qtlseqr_output.txt"),

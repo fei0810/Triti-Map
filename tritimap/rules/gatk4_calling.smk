@@ -15,7 +15,7 @@ rule gatk4HC:
         filter = "--dont-use-soft-clipped-bases --standard-min-confidence-threshold-for-calling 20.0 --create-output-variant-index false",
         genome = config['ref']['genome']
     output:
-        join(dir_path+"/05_vcfout", "_".join(samples.bulk.drop_duplicates()) + "_{contig}.vcf")
+        temp(join(dir_path+"/05_vcfout", "_".join(samples.bulk.drop_duplicates()) + "_{contig}.vcf"))
     message: "\nCalling {input} variants with GATK4 HaplotyeCaller by contig\n"
     log:
         join(dir_path+"/logs", "_".join(samples.bulk.drop_duplicates()) + "_{contig}.log")

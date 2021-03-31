@@ -43,6 +43,7 @@ winsize <- as.numeric(snakemake@params[["winsize"]])
 
 filter_probs = as.numeric(snakemake@params[["filterprobs"]])
 f_pvalue <- as.numeric(snakemake@params[["pvalue"]])
+min_length <- as.numeric(snakemake@params[["min_length"]])
 
 output_dir <- snakemake@params[["dirname"]]
 
@@ -103,7 +104,7 @@ rawout <- getQTLTable(SNPset = datqtl, method = "QTLseq", interval = 99, export 
 
 # filter raw region by snp count and region length, 10 is suitable for EMS data?
 out <- rawout %>% filter(nSNPs >= 10 & avgSNPs_Mb >= 10 &
-                            length >= 10000)
+                            length >= min_length)
 
 # if no region left
 if (nrow(out) < 1) {
