@@ -1,0 +1,262 @@
+###############################################################################
+#
+# Author contact:
+# zhaofei920810@gmail.com
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+###############################################################################
+import pandas as pd
+from os.path import join, isfile, isdir, basename, abspath, dirname
+import re, glob, operator, sys
+from snakemake.utils import validate, min_version
+
+#### Set minimum snakemake version ####
+
+min_version("6.0.0")
+
+#### Set snakemake real path ####
+
+work_dir = abspath(workflow.snakefile)
+script_dir = join(dirname(work_dir), "scripts")
+sys.path.append(script_dir)
+
+#### Load configuration files and sample sheets ####
+
+configfile: "config.yaml"
+validate(config, schema="schemas/config.schema.yaml")
+
+if not isfile(config['samples']):
+    exit('\n\n### ERROR Attention! ###\n\nNo sample information file can use, please check.\n\n### ERROR Attention! ###\n\n')
+
+samples = pd.read_csv(config['samples']).set_index(
+    ['sample', 'marker','bulk','type'], drop=False)
+samples.index = samples.index.set_levels(
+    [i.astype(str) for i in samples.index.levels])
+validate(samples, schema="schemas/samples.schema.yaml")
+
+# denovo scaffolds filter method
+
+if config['module'] == "only_assembly" and config['denovo_filter_method'] == "external_region":
+    if not isfile(config['filter_region_file']):
+        exit('\n\n### ERROR Attention! ###\n\nNo external candidate region information file can use, please check.\n\n### ERROR Attention! ###\n\n')
+    else:
+        regions = pd.read_csv(config['filter_region_file']).set_index(['chrom', 'start','end'], drop=False)
+        if len(regions) < 1:
+            exit('\n\n### ERROR Attention! ###\n\nNo candidate region information in the file, please check.\n\n### ERROR Attention! ###\n\n')
+        else:
+            regions.index = regions.index.set_levels([i.astype(str) for i in regions.index.levels])
+            validate(regions, schema="schemas/region.schema.yaml")
+            if max(regions.end - regions.start) < 100000:
+                exit('\n\n### ERROR Attention! ###\n\nExternal candidate region need longer than 100kb, better longer than 1Mb, please check.\n\n### ERROR Attention! ###\n\n')
+            else:
+                pass
+                # print('The longest region is' + str(max(regions.end - regions.start)))
+elif config['module'] == "only_assembly" and config['denovo_filter_method'] == "external_fasta":
+    if not isfile(config['filter_fasta_file']):
+        exit('\n\n### ERROR Attention! ###\n\nNo external fasta file can use, please check. \n\n### ERROR Attention! ###\n\n')
+    else:
+        from Bio import SeqIO
+        external_fasta = list(SeqIO.parse(config['filter_fasta_file'], "fasta"))
+        if len(external_fasta) < 1:
+            exit('\n\n### ERROR Attention! ###\n\nPlease use fasta format file as external filtering fasta\n\n### ERROR Attention! ###\n\n')
+        else:
+            seq_len = []
+            for i in range(len(external_fasta)):
+                print(external_fasta[i].id + 'length is ' + str(len(external_fasta[i].seq)))
+                seq_len.append(len(external_fasta[i].seq))
+            if max(seq_len) < 100000:
+                exit('\n\n### ERROR Attention! ###\n\nExternal fasta sequence need longer than 100kb, better longer than 1Mb, please check.\n\n### ERROR Attention! ###\n\n')
+            else:
+                pass
+                # print('External longest fasta sequence is ' + str(max(seq_len)) + 'bp')
+elif config['module'] == "only_assembly" and config['denovo_filter_method'] == "Triti-Map":
+    exit('\n\n### ERROR Attention! ###\n\nUse "only_assembly" module, "denovo_filter_method" in config file should be "external_region" or "external_fasta" , please check config.yaml.\n\n### ERROR Attention! ###\n\n')
+else:
+    pass
+
+dir_path="results"
+
+#### cheak genome index file ####
+
+if not isfile(config['ref']['genome'] +".fai"):
+    exit('\n\n### ERROR Attention! ###\nNeed built samtools genome index file first! \n\nrun command :\n\nsamtools faidx ' + config['ref']['genome'] + '\n\n### ERROR Attention! ###\n\n')
+elif not isfile(re.sub(r'\.fasta|\.fa|\.gz', '', config['ref']['genome'])+".dict"):
+    exit('\n\n### ERROR Attention! ###\nNeed built GATK genome index file first! \n\nrun command :\n\ngatk CreateSequenceDictionary -R ' + config['ref']['genome'] + '\n\n### ERROR Attention! ###\n\n')
+elif (not isfile(config['ref']['genome']+".bwt.2bit.64")) and (config['datatype'] == 'dna'):
+    exit('\n\n### ERROR Attention! ###\nNeed built BWA-MEM2 genome index file first! \n\nrun command :\n\nbwa-mem2 index ' + config['ref']['genome'] + '\n\n### ERROR Attention! ###\n\n')
+elif (not isfile(config['ref']['STARdir'] +"/chrNameLength.txt")) and (config['datatype'] == 'rna'):
+    exit('\n\n### ERROR Attention! ###\nNeed built STAR genome index file first! \n\nrun command :\n\nSTAR --runThreadN 10 --runMode genomeGenerate \\\n--genomeDir ' + config['ref']['STARdir'] + ' \\\n--genomeFastaFiles ' + config['ref']['genome'] + ' \\\n--sjdbOverhang 100 --sjdbGTFfile ' + config['ref']['annotation'] + ' \\\n--genomeChrBinNbits 18 --limitGenomeGenerateRAM 50805727274' + '\n\n### ERROR Attention! ###\n\n')
+else:
+    # print('All genome index files are exist!')
+    pass
+
+##### Wildcard constraints ##### 
+
+wildcard_constraints:
+    bulktype="|".join(set(samples['type'])),
+    bulk="|".join(set(samples['bulk'])),
+    sample="|".join(samples.index.get_level_values(0)),
+    marker="|".join(set(samples['marker'])),
+    poolsample="|".join(set(samples[samples.type=='pool']['sample'])),
+    poolmark="|".join(set(samples[samples.type=='pool']['marker']))
+
+#### Bulk information ####
+
+bulkname = list(set(samples[samples.type == 'pool'].bulk))
+markername = list(set(samples[samples.type == 'pool'].marker))
+poolname = list(set(samples[samples.type == 'pool'].index.get_level_values(0)))
+typename = list(set(samples.type))
+
+#### max threads ####
+
+if config['maxthreads'] >= 10:
+    thread = int(config['maxthreads']/2)
+elif config['maxthreads'] < 10:
+    thread = int(config['maxthreads'])
+else:
+    exit("need set maxthreads")
+
+#### GATK java parameter ####
+
+java_parameter = '--java-options "-Xmx'+str(config['memory'])+"G"+' -Djava.io.tmpdir='+dir_path+'"'
+
+#### get genotype information ####
+
+rece_pool = samples[(samples.genotype == 'recessive') & (samples.type == 'pool')]['bulk'].drop_duplicates().tolist()
+rece_parent = samples[(samples.genotype == 'recessive') & (samples.type == 'parent')]['bulk'].drop_duplicates().tolist()
+
+if len(rece_pool):
+    rece_poolName = rece_pool[0]+'_pool'
+else:
+    rece_poolName = ''
+    # print("none recessive pool")
+if len(rece_parent):
+    rece_parentName = rece_parent[0]+'_parant'
+else:
+    rece_parentName = ''
+    # print("none recessive parent")
+
+if len(rece_pool) and len(rece_parent) and rece_poolName != rece_poolName:
+    exit("recessive pool and recessive parent are not the same specie. Exiting")
+
+if len(samples[samples.type == 'pool']) < 2:
+    exit("Number of 'pool' in the samples.csv type column at least two. Exiting")
+elif len(samples[samples.type == 'parent']['bulk'].drop_duplicates()) != 2 and len(rece_pool) == 0 and len(rece_parent) == 0:
+    genotypefilterType = 'onlypool'
+    pool1Name = bulkname[0]+'_pool'
+    pool2Name = bulkname[1]+'_pool'
+    parent1Name = ''
+    parent2Name = ''
+    # print(genotypefilterType)
+elif len(samples[samples.type == 'parent']['bulk'].drop_duplicates()) != 2 and len(rece_pool) == 1 and len(rece_parent) == 0:
+    genotypefilterType = 'recessivepool'
+    pool1Name = bulkname[0]+'_pool'
+    pool2Name = bulkname[1]+'_pool'
+    parent1Name = ''
+    parent2Name = ''
+    # print(genotypefilterType)
+elif len(samples[samples.type == 'parent']['bulk'].drop_duplicates()) == 2 and len(rece_parent) == 0:
+    genotypefilterType = 'poolandparent'
+    pool1Name = bulkname[0]+'_pool'
+    pool2Name = bulkname[1]+'_pool'
+    parent1Name = bulkname[0]+'_parent'
+    parent2Name = bulkname[1]+'_parent'
+    # print(genotypefilterType)
+elif len(samples[samples.type == 'parent']['bulk'].drop_duplicates()) == 2 and len(rece_parent) == 1:
+    genotypefilterType = 'recessiveparent'
+    pool1Name = bulkname[0]+'_pool'
+    pool2Name = bulkname[1]+'_pool'
+    parent1Name = bulkname[0]+'_parent'
+    parent2Name = bulkname[1]+'_parent'
+    # print(genotypefilterType)
+else:
+    exit("need set genotype in sample.csv")
+
+
+## set output file ####
+
+if config['module'] == "only_mapping":
+    rule all:
+        input:
+            join(dir_path+"/06_regionout", "_".join(samples.bulk.drop_duplicates()) + "_snpindex_input.txt"),
+            join(dir_path+"/06_regionout", "_".join(samples.bulk.drop_duplicates())+ "_qtlseqr_output.txt"),
+            join(dir_path+"/06_regionout", "_".join(samples.bulk.drop_duplicates())+ "_qtlseqr_filter_region.txt"),
+            join(dir_path+"/06_regionout", "_".join(samples.bulk.drop_duplicates())+ "_qtlseqr_raw_region.txt"),
+            join(dir_path+"/06_regionout", "_".join(samples.bulk.drop_duplicates())+ "_qtlseqr_filter_snpinfo.txt"),
+            join(dir_path+"/06_regionout", "_".join(samples.bulk.drop_duplicates())+ "_qtlseqr_SNPcounts_point.pdf"),
+            join(dir_path+"/06_regionout", "_".join(samples.bulk.drop_duplicates())+ "_qtlseqr_SNPcounts_line.pdf"),
+            join(dir_path+"/06_regionout", "_".join(samples.bulk.drop_duplicates())+ "_qtlseqr_SNPindex_point.pdf"),
+            join(dir_path+"/06_regionout", "_".join(samples.bulk.drop_duplicates())+ "_qtlseqr_SNPindex_line.pdf")
+elif config['module'] == "only_assembly":
+    rule all:
+        input:
+            expand([dir_path+"/07_assembleout/{bulk}_candidate_denovo.fasta",
+            dir_path+"/07_assembleout/{bulk}_candidate_denovo_pfam_anno.txt",
+            dir_path+"/07_assembleout/{bulk}_candidate_denovo_pfam_anno.fasta",
+            dir_path+"/07_assembleout/{bulk}_candidate_denovo_blast_anno.txt",
+            dir_path+"/07_assembleout/{bulk}_unmap_denovo.fasta",
+            dir_path+"/07_assembleout/{bulk}_unmap_denovo_pfam_anno.txt",
+            dir_path+"/07_assembleout/{bulk}_unmap_denovo_pfam_anno.fasta",
+            dir_path+"/07_assembleout/{bulk}_unmap_denovo_blast_anno.txt"],bulk=bulkname)
+
+elif config['module'] == "all":
+    rule all:
+        input:
+            join(dir_path+"/06_regionout", "_".join(samples.bulk.drop_duplicates()) + "_snpindex_input.txt"),
+            join(dir_path+"/06_regionout", "_".join(samples.bulk.drop_duplicates())+ "_qtlseqr_output.txt"),
+            join(dir_path+"/06_regionout", "_".join(samples.bulk.drop_duplicates())+ "_qtlseqr_filter_region.txt"),
+            join(dir_path+"/06_regionout", "_".join(samples.bulk.drop_duplicates())+ "_qtlseqr_raw_region.txt"),
+            join(dir_path+"/06_regionout", "_".join(samples.bulk.drop_duplicates())+ "_qtlseqr_filter_snpinfo.txt"),
+            join(dir_path+"/06_regionout", "_".join(samples.bulk.drop_duplicates())+ "_qtlseqr_SNPcounts_point.pdf"),
+            join(dir_path+"/06_regionout", "_".join(samples.bulk.drop_duplicates())+ "_qtlseqr_SNPcounts_line.pdf"),
+            join(dir_path+"/06_regionout", "_".join(samples.bulk.drop_duplicates())+ "_qtlseqr_SNPindex_point.pdf"),
+            join(dir_path+"/06_regionout", "_".join(samples.bulk.drop_duplicates())+ "_qtlseqr_SNPindex_line.pdf"),
+            expand([dir_path+"/07_assembleout/{bulk}_candidate_denovo.fasta",
+            dir_path+"/07_assembleout/{bulk}_candidate_denovo_pfam_anno.txt",
+            dir_path+"/07_assembleout/{bulk}_candidate_denovo_pfam_anno.fasta",
+            dir_path+"/07_assembleout/{bulk}_candidate_denovo_blast_anno.txt",
+            dir_path+"/07_assembleout/{bulk}_unmap_denovo.fasta",
+            dir_path+"/07_assembleout/{bulk}_unmap_denovo_pfam_anno.txt",
+            dir_path+"/07_assembleout/{bulk}_unmap_denovo_pfam_anno.fasta",
+            dir_path+"/07_assembleout/{bulk}_unmap_denovo_blast_anno.txt"],bulk=bulkname)
+else:
+    exit("config module is wrong. all/only_mapping/only_assembly")
+
+#### load rules ####
+
+include: "rules/fastq_pretreat.smk"
+include: "rules/merge_fastq.smk"
+if config['datatype'] == 'dna':
+    include: "rules/dna_mapping.smk"
+    include: "rules/dnabam_pretreat.smk"
+if config['datatype'] == 'rna':
+    include: "rules/rna_mapping.smk"
+    include: "rules/rnabam_pretreat.smk"
+include: "rules/gatk4_calling.smk"
+include: "rules/vcf_hard_filtering.smk"
+include: "rules/vcf_genotype_filtering.smk"
+include: "rules/vcf_pretreat.smk"
+include: "rules/qtlseqr_plot.smk"
+if config['merge_lib'] == 'merge':
+    include: "rules/denovo_assemble_merge.smk"
+if config['merge_lib'] == 'split':
+    include: "rules/denovo_assemble_split.smk"
+# denovo filter method
+if config['module'] == "only_assembly" and config['denovo_filter_method'] == "external_fasta":
+    include: "rules/denovo_sacffold_filter_by_fasta.smk"
+elif config['module'] == "only_assembly" and config['denovo_filter_method'] == "external_region":
+    include: "rules/denovo_scaffold_filter_by_region.smk"
+else:
+    include: "rules/denovo_scaffold_filter.smk"
+include: "rules/pfam_annotation.smk"
+include: "rules/blast_annotation.smk"
+
+onsuccess:
+    print("Workflow finished without errors.")
+onerror:
+    print("Errors.")

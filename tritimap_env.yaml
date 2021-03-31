@@ -1,0 +1,29 @@
+name: tritimap
+channels:
+  - conda-forge
+  - bioconda
+  - main
+  - free
+  - defaults
+dependencies:
+  - python=3.9.2
+  - snakemake=6.0.3
+  - snakemake-minimal=6.0.3
+  - biopython
+  - fastp>=0.20.1
+  - bioawk
+  - bwa-mem2=2.2.1
+  - samtools=1.12
+  - seqkit>=0.15.0
+  - spades=3.15.0
+  - star=2.7.6a
+  - abyss=2.0.2
+  - bedops=2.4.39
+  - bwa=0.7.17
+  - gatk4=4.2.0.0
+  - hmmer=3.3.2
+  - minimap2>=2.17
+  - xmltramp2>=3.1.1
+  - r-base=4.0.2
+  - r-jsonlite=1.7.2
+  - r-qtlseqr=0.7.5.2

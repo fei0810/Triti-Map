@@ -1,0 +1,120 @@
+$schema: "http://json-schema.org/draft-07/schema#"
+description: Triti-Map configuration file
+type: object
+properties:
+  email:
+    description: required by EMBL-EBI API
+    type: string
+  samples:
+    description: sample information file path
+    type: string
+  datatype:
+    description: dna:ChIP-seq or WGS; rna:RNA-seq
+    type: string
+    enum: [dna, rna]
+
+  maxthreads:
+    type: number
+
+  ref:
+    description: genome reference and annotation file path
+    type: object
+    properties:
+      genome:
+        type: string
+      annotation:
+        type: string
+      STARdir:
+        type: string
+    required:
+      - genome
+      - annotation
+      - STARdir
+
+  trim:
+    description: fastp software parameters, no changed needed
+    type: object
+    properties:
+      quality:
+        type: number
+      minlength:
+        type: number
+    required:
+      - quality
+      - minlength
+  gatk:
+    description: gatk software parameters, no changed needed
+    type: object
+    properties:
+      min_SNP_DP:
+        type: number
+    required:
+      - min_SNP_DP
+
+  snpindex:
+    description: BSA QTLseqr parameters
+    type: object
+    properties:
+      pop_struc:
+        type: string
+        enum: [RIL, F2]
+      bulksize:
+        type: number
+      winsize:
+        type: number
+      filter_probs:
+        type: number
+      fisher_p:
+        type: number
+    required:
+      - pop_struc
+      - bulksize
+      - winsize
+      - filter_probs
+      - fisher_p
+
+  merge_lib:
+    type: string
+    enum: [merge, split]
+
+  memory:
+    type: number
+
+  abyss:
+    type: object
+    properties:
+      kmer:
+        type: number
+    required:
+      - kmer
+
+  scaffold:
+    type: object
+    properties:
+      minlength:
+        type: number
+    required:
+      - minlength
+  denovo_filter_method:
+    description: denovo scaffolds filter method Triti-Map/external_region/external_fasta
+    type: string
+    enum: [Triti-Map, external_region, external_fasta]
+  blast_database:
+    type: string
+    enum: [em_cds_pln, em_std_pln]
+
+required:
+  - email
+  - samples
+  - datatype
+  - maxthreads
+  - ref
+  - trim
+  - gatk
+  - snpindex
+  - merge_lib
+  - memory
+  - abyss
+  - scaffold
+  - denovo_filter_method
+  - blast_database

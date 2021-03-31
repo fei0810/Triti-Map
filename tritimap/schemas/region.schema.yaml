@@ -1,0 +1,14 @@
+$schema: "http://json-schema.org/draft-07/schema#"
+description: Triti-Map region.csv file
+type: object
+properties:
+  chrom:
+    type: string
+  start:
+    type: number
+  end:
+    type: number
+required:
+  - chrom
+  - start
+  - end

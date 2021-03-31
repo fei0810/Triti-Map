@@ -1,0 +1,27 @@
+$schema: "http://json-schema.org/draft-07/schema#"
+description: Triti-Map sample.csv file
+type: object
+properties:
+  sample:
+    description: sample name/id (required）
+    type: string
+  type:
+    description: sample type i.e. pool or parent (required）
+    type: string
+    enum: [pool, parent]
+  genotype:
+    description: sample genotype i.e. recessive or dominant or unknown if you're not sure
+    type: string
+    enum: [recessive, dominant, unknown]
+  fq1:
+    description: path to FASTQ R1 file
+    type: string
+  fq2:
+    description: path to FASTQ R2 file
+    type: string
+required:
+  - sample
+  - type
+  - genotype
+  - fq1
+  - fq2

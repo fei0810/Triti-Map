@@ -1,0 +1,93 @@
+# The contents after the '#' symbol are the option description.
+
+###############################
+###### Basic Information ######
+###############################
+
+# use EMBL-EBI hmmerscan and blast API need user email, required by EMBL-EBI API.
+email: zhaofei920810@gamil.com
+
+# sample information file path. No change needed!
+samples: sample.csv
+
+# datatype option: dna/rna
+# dna:ChIP-seq or WGS data
+# rna:RNA-seq
+datatype: dna
+
+# the max threads that Triti-Map can use
+maxthreads: 30
+
+##########################################
+###### Reference Genome Information ######
+##########################################
+
+# genome reference and annotation file path
+ref:
+  genome: /genome/path/161010_Chinese_Spring_v1.0_pseudomolecules.fasta
+  annotation: /annotation/path/iwgsc_refseqv1.1_genes_2017July06/IWGSC_v1.1_HC_20170706.gtf
+  # STARdir is required if datatype is RNA-seq(rna)
+  STARdir: /star/path/wheat_STAR_wholegenome1.1
+
+#####################################
+###### Raw Fastq Data Pretreat ######
+#####################################
+
+# fastp software parameters. No change needed!
+trim:
+  quality: 20
+  minlength: 50
+
+#########################################
+###### BSA-based Module Parameters ######
+#########################################
+
+# min SNP depth in each bulk to filter gatk raw vcf file, related to sequencing depth，10 is recommended. No change needed!
+gatk:
+  min_SNP_DP: 10
+
+# Important!
+snpindex:
+  # population structure
+  # pop_struc option: RIL/F2, required by QTLseqr
+  pop_struc: RIL
+  # bulk size, required by QTLseqr
+  bulksize: 30
+  # smooth window size, required by QTLseqr. No change needed!
+  winsize: 1000000
+  # delta snpindex and snp-conut/1Mb percentage of filtration.
+  # 0.75: candidate region with average delta snpindex and snp-conut/1Mb both greater than 75% of all raw regions will be retained.
+  filter_probs: 0.75
+  # SNP fesher test filter pvalue, used to filter candidate SNP. No change needed!
+  fisher_p: 0.0001
+
+########################################
+###### Assemble Module Parameters ######
+########################################
+
+# If your chip-seq data have multiple histone modification types, option 'split' is recommended when the server memory is less than 300G.
+# merge_lib option: merge/split
+merge_lib: merge
+# the memory(G) spades software can use when assemble RNA-seq data
+memory: 400
+# the kmer abyss software can use when assemble ChIP-seq data, 90 is recommended. No change needed!
+abyss:
+  kmer: 90
+# the de novo scaffolds min length. No change needed!
+scaffold:
+  minlength: 500
+
+# de novo scaffolds filter method: Triti-Map/external_region/external_fasta
+# Triti-Map: auto filter by Triti-Map method, don't need external file
+# external_region: filter by user-defined region file
+# external_fasta: filter by user-defined fasta file
+denovo_filter_method: Triti-Map
+# if denovo_filter_method: external_region, set region file path
+filter_region_file: "region.csv"
+# if denovo_filter_method: external_fasta, set fasta file path
+filter_fasta_file: "region.fasta"
+
+# Database to be used for de novo scaffolds blast
+# blast_database option: em_cds_pln/em_std_pln
+# em_cds_pln (plant cds database) is highly recommended, em_std_pln (plant standard database) will consume a lot of time
+blast_database: em_cds_pln
