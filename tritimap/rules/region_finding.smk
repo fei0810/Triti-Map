@@ -9,7 +9,7 @@ rule snpindexRegion:
     output:
         region = join(dir_path+"/06_regionout", "_".join(samples.bulk.drop_duplicates())+ "_snpindex_region.txt"),
         snp = join(dir_path+"/06_regionout", "_".join(samples.bulk.drop_duplicates())+ "_snpindex_candicatesnp.txt"),
-    message: "\nSNPindex calculation\n"
+    message: "\nSNPindex calculation. Input file: {input}\n"
     log:
         join(dir_path+"/logs", "_".join(samples.bulk.drop_duplicates())+ "_snpindexregion.log")
     shell:"""

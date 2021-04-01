@@ -13,7 +13,7 @@ rule dnaBWAmem2Mapping:
         errormap = dir_path+"/03_mappingout/{bulk}_{bulktype}.errormap.sort.bam",
         unmap = dir_path+"/03_mappingout/{bulk}_{bulktype}.unmap.bam"
     threads: thread
-    message: "mapping {input} with BWA mem2"
+    message: "Mapping {input} with BWA-mem2"
     run:
         shell("""
         bwa-mem2 mem -v 1 -t {threads} -M -Y -R '{params.group}' {params.genome} {input} | \

@@ -16,7 +16,7 @@ rule Rawfastq2Cleanfastq:
     log:
         dir_path+"/logs/{sample}_{marker}_{bulk}_{bulktype}_fastp.log"
     threads: thread
-    message: "\nprocessing {input.fq1} and {input.fq2} with fastp\n"
+    message: "\nProcessing {input.fq1} and {input.fq2} with fastp\n"
     run:
         shell("""
         fastp -w {threads} \

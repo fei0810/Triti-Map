@@ -6,7 +6,7 @@ rule vcfHardFiltration:
         scriptdir = script_dir
     output:
         join(dir_path+"/05_vcfout", "_".join(samples.bulk.drop_duplicates()) + "_hardfiltered_gatk.vcf")
-    message:"\nRaw vcf file hard filter\n"
+    message:"\nRaw vcf file hard filter.  Input file: {input}\n"
     log:
         join(dir_path+"/logs", "_".join(samples.bulk.drop_duplicates()) + "_gatkhardfilter.log")
     shell:"""

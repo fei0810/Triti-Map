@@ -13,7 +13,7 @@ rule MergeCleanPoolFastq:
         bulk1_fq2 = join(dir_path+"/02_mergedata", bulkname[0] + "_pool_merge_fastp_R2.fq.gz"),
         bulk2_fq1 = join(dir_path+"/02_mergedata", bulkname[1] + "_pool_merge_fastp_R1.fq.gz"),
         bulk2_fq2 = join(dir_path+"/02_mergedata", bulkname[1] + "_pool_merge_fastp_R2.fq.gz")
-    message: "\nmerge different type of ChIP-seq data to one file to calling snp\n"
+    message: "\nMerge different type of ChIP-seq data to one file to calling snp. Input fils: {input}\n"
     run:
         shell("""
         ls {params.dir_path}/01_cleandata/*{params.bulk1}_pool_fastp_R1.fq.gz | xargs cat > {output.bulk1_fq1} ; \
@@ -35,7 +35,7 @@ rule MergeCleanParentFastq:
         bulk1_fq2 = join(dir_path+"/02_mergedata", bulkname[0] + "_parent_merge_fastp_R2.fq.gz"),
         bulk2_fq1 = join(dir_path+"/02_mergedata", bulkname[1] + "_parent_merge_fastp_R1.fq.gz"),
         bulk2_fq2 = join(dir_path+"/02_mergedata", bulkname[1] + "_parent_merge_fastp_R2.fq.gz")
-    message: "\nmerge different type of ChIP-seq data to one file to calling snp\n"
+    message: "\nMerge different type of ChIP-seq data to one file to calling snp. Input file: {input}\n"
     run:
         shell("""
         ls {params.dir_path}/01_cleandata/*{params.bulk1}_parent_fastp_R1.fq.gz | xargs cat > {output.bulk1_fq1} ; \

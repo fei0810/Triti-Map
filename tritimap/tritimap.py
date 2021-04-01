@@ -8,37 +8,33 @@ from shutil import copyfile
 from tritimap import __version__
 from .scripts import utils
 
-# log basic config
+
 logging.basicConfig(level=logging.INFO,
                     datefmt="%Y-%m-d %H:%M",
                     format="[%(asctime)s %(levelname)s] %(message)s")
-
-# exception message
 
 
 def log_exception(msg):
     logging.critical(msg)
     logging.info(
-        "Documentation is available at: https://github.com/fei0810/tritimap")
+        "Documentation is available at: https://github.com/fei0810/Triti-Map")
     logging.info(
-        "Issues can be raised at: https://github.com/fei0810/tritimap")
+        "Issues can be raised at: https://github.com/fei0810/Triti-Map/issues")
     sys.exit(1)
-
-
-# command line
 
 
 @click.group(context_settings=dict(help_option_names=["-h", "--help"]))
 @click.version_option(__version__)
 @click.pass_context
 def cli(obj):
-    """Triti-Map: A Snakemake-based workflow for gene mapping and finding new gene in Triticeae species. For more information, see: https://github.com/fei0810/Triti-Map
+    """Triti-Map: A Snakemake-based pipeline for gene mapping in Triticeae. For more information, see: https://github.com/fei0810/Triti-Map
     """
+
 
 def get_snakefile(file="Snakefile"):
     sf = os.path.join(os.path.dirname(os.path.abspath(__file__)), file)
     if not os.path.exists(sf):
-        sys.exit("Unable to locate the Snakemake workflow file;  tried %s" %
+        sys.exit("Unable to locate the Snakemake pipeline file;  tried %s" %
                  sf)
     return sf
 
@@ -46,7 +42,8 @@ def get_snakefile(file="Snakefile"):
 @cli.command(
     "run",
     context_settings=dict(ignore_unknown_options=True),
-    short_help="Run Triti-Map workflow"
+    help="Triti-Map main command. The pipeline supports three execute modules: all, only_mapping and only_assembly. First, you need to fill in the configuration file correctly.",
+    short_help="Run Triti-Map pipeline"
 )
 @click.argument(
     "workflow",
@@ -73,17 +70,17 @@ def get_snakefile(file="Snakefile"):
     help="Use at most N CPU cores/jobs in parallel.",
 )
 @click.option(
-    "--profile",
-    default=None,
-    help="Name of profile to use for configuring Snakemake.",
-)
-@click.option(
     "-n",
     "--dryrun",
     is_flag=True,
     default=False,
     show_default=True,
     help="Do not execute anything, and display what would be done.",
+)
+@click.option(
+    "--profile",
+    default=None,
+    help="Name of profile to use for configuring Snakemake.",
 )
 @click.argument("snakemake_args", nargs=-1, type=click.UNPROCESSED)
 def run_workflow(workflow, working_dir, config_file, jobs, profile, dryrun,
@@ -127,12 +124,16 @@ def run_workflow(workflow, working_dir, config_file, jobs, profile, dryrun,
 @cli.command(
     'init',
     context_settings={"ignore_unknown_options": True},
-    short_help="Generate snakemake configuration file and other needed file.")
-@click.option('-d',
-              '--working-dir',
-              type=click.Path(dir_okay=True, writable=True, resolve_path=True),
-              help="Triti-Map running directory.",
-              default=".")
+    help="Generate snakemake configuration file and other needed file. The command will generate three configuration files(config.yaml, sample.csv and region.csv) in the running directory.",
+    short_help="Generate snakemake configuration file and other needed file."
+)
+@click.option(
+    '-d',
+    '--working-dir',
+    type=click.Path(dir_okay=True, writable=True, resolve_path=True),
+    help="Triti-Map running directory.",
+    default="."
+)
 def init_workdir(working_dir):
     config_file = utils.get_configfile()
     sample_file = utils.get_samplefile()

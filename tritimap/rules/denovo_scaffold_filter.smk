@@ -16,7 +16,7 @@ rule uniqScaffold:
         scaffold2 = join(dir_path+"/07_assembleout", bulkname[1] + "_candidate_denovo.fasta"),
         unmap1 = join(dir_path+"/07_assembleout", bulkname[0] + "_unmap_denovo.fasta"),
         unmap2 = join(dir_path+"/07_assembleout", bulkname[1] + "_unmap_denovo.fasta")
-    message: "\nget uniq scaffolds\n"
+    message: "\nGet uniq scaffolds by Triti-Map. Input file: {input.fa}\n"
     threads: thread
     log:
         join(dir_path+"/logs", "_".join(samples.bulk.drop_duplicates()) + "_uniqscaffold.log")

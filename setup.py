@@ -8,10 +8,10 @@ with open(join(this_directory, "README.md"), encoding="utf-8") as f:
 setuptools.setup(
     name="tritimap",
     version="0.9.0",
-    url="https://github.com/fei0810/Triti-Map",
     author="Fei Zhao",
     author_email="zhaofei920810@gmail.com",
-    description="A Snakemake-based workflow for gene mapping and finding new gene in Triticeae species.",
+    url="https://github.com/fei0810/Triti-Map",
+    description="A Snakemake-based pipeline for gene mapping in Triticeae.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     packages=['tritimap'],
@@ -19,13 +19,21 @@ setuptools.setup(
     data_files=[(".", ["README.md"])],
     include_package_data=True,
     python_requires=">=3.6",
-    install_requires=['click'],
+    install_requires=[
+        'click',
+        'snakemake'
+    ],
     entry_points={
         'console_scripts': [
             'tritimap = tritimap.tritimap:cli'
         ]
     },
     classifiers=[
+        'Programming Language :: Python :: 3',
+        'License :: OSI Approved :: MIT License',
+        'Operating System :: POSIX :: Linux',
+        'Intended Audience :: Science/Research',
+        'Development Status :: 4 - Beta',
         "Topic :: Scientific/Engineering :: Bio-Informatics"
-    ],
+    ]
 )

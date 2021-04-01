@@ -40,7 +40,7 @@ rule MergeSplitAssemble:
     output:
         bulk1 = join(dir_path+"/07_assembleout", bulkname[0] + "_merge_denovo_scaffolds.fasta"),
         bulk2 = join(dir_path+"/07_assembleout", bulkname[1] + "_merge_denovo_scaffolds.fasta")
-    message: "\nmerge different type of ChIP-seq data to one file to calling snp\n"
+    message: "\nMerge different type of ChIP-seq data to one file. Input files: {input}\n"
     run:
         shell("""
         ls {params.dir_path}/07_assembleout/*_{params.bulk1}_pool_split_denovo_scaffolds.fasta | xargs cat > {output.bulk1} ; \

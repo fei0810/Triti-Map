@@ -13,7 +13,7 @@ rule STAR1Mapping:
         dir = directory(dir_path+"/03_mappingout/{bulk}_{bulktype}_step1/"),
         sj = dir_path+"/03_mappingout/{bulk}_{bulktype}_step1/{bulk}_{bulktype}SJ.out.tab",
     threads: thread
-    message: "\nmapping {input} with STAR (step 1)\n"
+    message: "\nMapping {input} with STAR (step 1)\n"
     log:
         dir_path+"/logs/{bulk}_{bulktype}_STARstep1.log"
     shell: """
@@ -37,7 +37,7 @@ rule STAR2Mapping:
         dir = directory(dir_path+"/03_mappingout/{bulk}_{bulktype}_step2"),
         step2bam = dir_path+"/03_mappingout/{bulk}_{bulktype}_step2/{bulk}_{bulktype}Aligned.sortedByCoord.out.bam"
     threads: thread
-    message: "\nmapping {input.fq} with STAR (Step 2)\n"
+    message: "\nMapping {input.fq} with STAR (Step 2)\n"
     log:
         dir_path+"/logs/{bulk}_{bulktype}_STARstep2.log"
     shell: """

@@ -19,17 +19,22 @@
 #
 ###############################################################################
 
-input=$1
+input=$(realpath $1)
 email=$2
-blastpath=$3
-transR=$4
+blastpath=$(realpath $3)
+transR=$(realpath $4)
 database=$5
 output=$6
+dir=$(dirname $input)
+name=$(basename $input | sed 's/fasta//')
 
-seqkit split -s 1 ${input}
+if [ -d ${dir}/temp.blast.${name}split ];then
+	rm -rf ${dir}/temp.blast.${name}split
+fi
+seqkit split -s 1 --out-dir ${dir}/temp.blast.${name}split ${input} 
 
 #use EBI API get json resoults
-for j in $(ls ${input}.split/*.fasta); do
+for j in $(ls ${dir}/temp.blast.${name}split/*.fasta); do
 	echo $j
 	python $blastpath --email $email --stype dna --program blastn --database $database --outformat out,json --outfile ${j} $j
 	echo "blast ${j} done"
@@ -37,11 +42,18 @@ for j in $(ls ${input}.split/*.fasta); do
 done
 
 #json 2 data table
-for j in $(ls ${input}.split/*.json.json); do
+for j in $(ls ${dir}/temp.blast.${name}split/*.json.json); do
 	echo $j
 	Rscript $transR $j ${j/json.json/}table.txt
 	head -n 6 ${j/json.json/}table.txt >${j/json.json/}table.top5hit.txt
 	echo "json2table $j done"
 done
 
-cat <(awk 'BEGIN{print "seqid\thit_db\thit_id\thit_desc\thit_url\thsp_bit_score\thsp_align_len\thsp_identity\thsp_query_from\thsp_query_to\thsp_hit_from\thsp_hit_to"}') <(cat ${input}.split/*table.top5hit.txt | grep -v 'seqid') >${output}
+cat <(awk 'BEGIN{print "seqid\thit_db\thit_id\thit_desc\thit_url\thsp_bit_score\thsp_align_len\thsp_identity\thsp_query_from\thsp_query_to\thsp_hit_from\thsp_hit_to"}') <(cat ${dir}/temp.blast.${name}split/*table.top5hit.txt | grep -v 'seqid') >${output}
+
+if [ ! -d $dir/temp_output ];then
+	mkdir $dir/temp_output
+fi
+
+rm -rf ${dir}/temp_output/temp.blast.${name}split
+mv ${dir}/temp.blast.${name}split ${dir}/temp_output

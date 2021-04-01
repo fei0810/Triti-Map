@@ -10,7 +10,7 @@ rule vcf2tab:
     output:
         snpindex = join(dir_path+"/06_regionout", "_".join(samples.bulk.drop_duplicates()) + "_snpindex_input.txt"),
         qtlseqr = join(dir_path+"/06_regionout", "_".join(samples.bulk.drop_duplicates()) + "_qtlseqr_input.txt")
-    message: "\nTransform genotype filterd VCF file to tab format\n"
+    message: "\nTransform genotype filterd VCF file to tab format. Input file: {input}\n"
     log:
         join(dir_path+"/logs", "_".join(samples.bulk.drop_duplicates()) + "_vcf2tab.log")
     shell:"""

@@ -71,7 +71,7 @@ rule rnaErrorMapReads:
         truemap = dir_path+"/04_GATKout/{bulk}_{bulktype}.truemap.sort.bam",
         errormap = dir_path+"/04_GATKout/{bulk}_{bulktype}.errormap.sort.bam"
     threads: thread
-    message: "get {input} errormap(XA or SA tag) reads and truemap reads"
+    message: "Get {input} errormap(XA or SA tag) reads and truemap reads"
     run:
         shell("""
         samtools view -h -f 3 {input} | egrep -v 'XA:Z|SA:Z' | samtools sort -@ {threads} -o {output.truemap} ;

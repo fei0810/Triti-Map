@@ -33,7 +33,7 @@ rule GATK4MergeVcf:
         java_p = java_parameter
     output:
         join(dir_path+"/05_vcfout", "_".join(samples.bulk.drop_duplicates()) + "_raw_gatk.vcf")
-    message: "\nmerge all separate VCF files\n"
+    message: "\nMerge all separate VCF files. Input files: {input}\n"
     log:
         join(dir_path+"/logs", "_".join(samples.bulk.drop_duplicates()) + "gatkmergevcf.log")
     shell:"""

@@ -13,7 +13,7 @@ rule vcfGenotypeFiltration:
         genome = config['ref']['genome'],
     output:
         join(dir_path+"/05_vcfout", "_".join(samples.bulk.drop_duplicates()) + "_genofiltered_gatk.vcf")
-    message:"\nRaw vcf file genotype filter\n"
+    message:"\nRaw vcf file genotype filter. Input file: {input}\n"
     log:
         join(dir_path+"/logs", "_".join(samples.bulk.drop_duplicates()) + "_genofilter.log")
     run:
