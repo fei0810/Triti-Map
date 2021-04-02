@@ -158,7 +158,7 @@ A complete catalog of Triti-Map results is shown below.
 
 ### Frequently Asked Questions
 
-You can also check out some of the [FAQ](https://github.com/fei0810/Triti-Map/wiki) you may encounter during use Triti-Map
+**You can also check out some of the [FAQ](https://github.com/fei0810/Triti-Map/wiki) you may encounter during use Triti-Map**
 
 ### Change Log
 
