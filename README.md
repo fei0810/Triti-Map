@@ -49,7 +49,7 @@ python setup.py install
 
 When using source code for installation, you need to install other dependencies of Triti-Map by yourself. You can view Triti-Map dependent software via `tritimap_env.yaml`
 
-### Prepareing relevant files
+### Preparing relevant files
 
 #### Genome and annotation files
 
