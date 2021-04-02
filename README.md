@@ -95,10 +95,8 @@ STAR --runThreadN 30 --runMode genomeGenerate \
 #### Configuration files
 
 ```sh
-# running directory
-cd /your/work/path
-# generate configuration file
-tritimap init
+# generate configuration file in running directory
+tritimap init -d /your/work/path
 ```
 
 When `tritimap init` is run successfully, the working directory will generate three configuration files that you need to modify.
