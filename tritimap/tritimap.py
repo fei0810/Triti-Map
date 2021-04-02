@@ -138,7 +138,8 @@ def init_workdir(working_dir):
     config_file = utils.get_configfile()
     sample_file = utils.get_samplefile()
     region_file = utils.get_regionfile()
-    os.makedirs(working_dir)
+    if not os.path.exists(working_dir):
+        os.makedirs(working_dir)
     copyfile(config_file, os.path.join(working_dir, "config.yaml"))
     copyfile(sample_file, os.path.join(working_dir, "sample.csv"))
     copyfile(region_file, os.path.join(working_dir, "region.csv"))
