@@ -19,7 +19,7 @@ rule uniqScaffoldByFasta:
     message: "\nGet bulk uniq scaffolds by fasta file. Input file: {input.fa}\n"
     threads: thread
     log:
-        join(dir_path+"/logs", "_".join(samples.bulk.drop_duplicates()) + "_uniqscaffold.log")
+        join(dir_path+"/logs", "_".join(samples.bulk.drop_duplicates()) + "_uniqscaffold_byfasta.log")
     shell:"""
     set +e
     bash {params.scriptdir}/getuniqscaffold_by_fasta.sh {input.fa} {params.database} {params.length} {params.genome} {threads} {params.datatype} {params.memory} {output.scaffold1} {output.scaffold2} {output.unmap1} {output.unmap2} > {log} 2>&1

@@ -13,15 +13,20 @@ rule dnaBWAmem2Mapping:
         errormap = dir_path+"/03_mappingout/{bulk}_{bulktype}.errormap.sort.bam",
         unmap = dir_path+"/03_mappingout/{bulk}_{bulktype}.unmap.bam"
     threads: thread
+    log:
+        dir_path+"/logs/{bulk}_{bulktype}_bwamem2.log"
     message: "Mapping {input} with BWA-mem2"
     run:
         shell("""
         bwa-mem2 mem -v 1 -t {threads} -M -Y -R '{params.group}' {params.genome} {input} | \
-        samtools sort -@ {threads} -o {output.raw} - ;
-        samtools view -h -f 3 {output.raw} | egrep -v 'XA:Z|SA:Z' | samtools sort -@ {threads} -o {output.truemap} ;
-        samtools view -h {output.raw} | egrep '^@|XA:Z|SA:Z' | samtools sort -@ {threads} -o {output.errormap} ;
+        samtools sort -@ {threads} -o {output.raw} -;
+        echo "raw.down" ;
+        samtools view -h -f 3 {output.raw} | egrep -v 'XA:Z|SA:Z' | samtools sort -@ {threads} -o {output.truemap} -;
+        echo "true.down" ;
+        samtools view -h {output.raw} | egrep '^@|XA:Z|SA:Z' | samtools sort -@ {threads} -o {output.errormap} -;
+        echo "error.down" ;
         samtools view -f 4 -b {output.raw} > {output.unmap} ;
-        samtools index -c {output.raw};
-        samtools index -c {output.truemap};
-        samtools index -c {output.errormap};
+        samtools index -c {output.raw} ;
+        samtools index -c {output.truemap} ;
+        samtools index -c {output.errormap}
     """)

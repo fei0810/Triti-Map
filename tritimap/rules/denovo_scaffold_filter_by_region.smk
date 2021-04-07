@@ -19,7 +19,7 @@ rule uniqScaffoldByRegion:
     message: "\nGet uniq scaffolds by region file. Input file: {input.fa}\n"
     threads: thread
     log:
-        join(dir_path+"/logs", "_".join(samples.bulk.drop_duplicates()) + "_uniqscaffold.log")
+        join(dir_path+"/logs", "_".join(samples.bulk.drop_duplicates()) + "_uniqscaffold_byregion.log")
     shell:"""
     set +e
     cat {input.region} | tr ',' '\t' | awk '{{print $1"\tqtl\t"$2"\t"$3}}' > {output.region}
