@@ -402,6 +402,9 @@ Options:
 ├── xxx_yyy_qtlseqr_raw_region.txt
 ├── xxx_yyy_qtlseqr_filter_region.txt
 ├── xxx_yyy_qtlseqr_filter_snpinfo.txt
+├── xxx_yyy_qtlseqr_filter_indelinfo.txt
+├── xxx_yyy_qtlseqr_filter_snp.bed
+├── xxx_yyy_qtlseqr_filter_indel.bed
 ├── xxx_yyy_qtlseqr_SNPcounts_line.pdf
 ├── xxx_yyy_qtlseqr_SNPcounts_point.pdf
 ├── xxx_yyy_qtlseqr_SNPindex_line.pdf
@@ -415,6 +418,9 @@ Options:
 - `xxx_yyy_qtlseqr_raw_region.txt` QTLseqr 通过 Delta SNPindex 分析得到的原始定位区间结果信息
 - `xxx_yyy_qtlseqr_filter_region.txt` 通过筛选的高可信度定位区间信息
 - `xxx_yyy_qtlseqr_filter_snpinfo.txt` 高可信度定位区间内的 SNP 信息
+- `xxx_yyy_qtlseqr_filter_indelinfo.txt` 高可信度定位区间内的 INDEL 信息
+- `xxx_yyy_qtlseqr_filter_snp.bed` 高可信度定位区间内的 SNP bed 格式文件，可以使用该文件在 Triti-Map 在线分析平台进行注释
+- `xxx_yyy_qtlseqr_filter_indel.bed` 高可信度定位区间内的 INDEL bed 格式文件
 - `*.pdf` pdf 文件为分析结果可视化展示，包括所有染色体 Delta SNPindex 和 snp counts 图，每个高可信度定位区间的 Delta SNPindex 图
 
 ### 序列组装模块的主要结果文件
