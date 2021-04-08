@@ -174,3 +174,7 @@ Lab Home Page：http://bioinfo.sibs.ac.cn/zhanglab/
 Issues can be raised at: https://github.com/fei0810/Triti-Map/issues
 
 We also encourage you to contribute to TriTi-Map! To fix bugs or add new features you need to create a Pull Request .
+
+### Acknowledgements
+
+Thanks to [@xuzhougeng](https://github.com/xuzhougeng) who provided installation support for Bioconda, and thanks to [@zwbao](https://github.com/zwbao) who offered Docker installation support.
