@@ -26,18 +26,23 @@ rule vcf2tab:
     fi
     """
 
-rule getRegionIndel:
+rule getRegionIndelandSNPbed:
     input:
         indel = join(dir_path+"/06_regionout", "_".join(samples.bulk.drop_duplicates()) + "_indel.txt"),
+        snp = join(dir_path+"/06_regionout", "_".join(samples.bulk.drop_duplicates())+ "_qtlseqr_filter_snpinfo.txt"),
         region=join(dir_path+"/06_regionout", "_".join(samples.bulk.drop_duplicates())+ "_qtlseqr_filter_region.txt")
     params:
         dirpath = join(dir_path+"/06_regionout")
     output:
-        join(dir_path+"/06_regionout", "_".join(samples.bulk.drop_duplicates())+ "_qtlseqr_filter_indelinfo.txt")
-    message: "\nGet indel information in candidate region. Input file: {input}\n"
+        indelinfo = join(dir_path+"/06_regionout", "_".join(samples.bulk.drop_duplicates())+ "_qtlseqr_filter_indelinfo.txt"),
+        indelbed = join(dir_path+"/06_regionout", "_".join(samples.bulk.drop_duplicates())+ "_qtlseqr_filter_indel.bed"),
+        snpbed = join(dir_path+"/06_regionout", "_".join(samples.bulk.drop_duplicates())+ "_qtlseqr_filter_snp.bed")
+    message: "\nGet candidate region indel and snp bed file. Input file: {input.indel}; {input.snp}; {input.region}\n"
     log:
-        join(dir_path+"/logs", "_".join(samples.bulk.drop_duplicates()) + "_getregionindel.log")
+        join(dir_path+"/logs", "_".join(samples.bulk.drop_duplicates()) + "_get_region_indel_snp_bed.log")
     shell:"""
     cat {input.region} | grep -v 'start' | cut -f1,3,4 | sort -k1,1 -k2,2n > {params.dirpath}/temp.candidateregion.indel.bed
-    bedmap --skip-unmapped --delim '\t' --header --echo {input.indel} {params.dirpath}/temp.candidateregion.indel.bed | cat <(head -n1 {input.indel}) - > {output} && rm {params.dirpath}/temp.candidateregion.indel.bed
+    bedmap --skip-unmapped --delim '\t' --header --echo {input.indel} {params.dirpath}/temp.candidateregion.indel.bed | cat <(head -n1 {input.indel}) - | cut -f1,3- | sed 's/^#CHROM/CHROM/' > {output.indelinfo} && rm {params.dirpath}/temp.candidateregion.indel.bed
+    cat {output.indelinfo} | grep -v '^CHROM'| awk 'BEGIN{{OFS="\t"}}{{print $1,$2-1,$2,$3,$4}}' |sort -k1,1 -k2,2n > {output.indelbed}
+    cat {input.snp} | grep -v '^CHROM'| awk 'BEGIN{{OFS="\t"}}{{print $1,$2-1,$2,$3,$4}}' |sort -k1,1 -k2,2n > {output.snpbed}
     """
