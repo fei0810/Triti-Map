@@ -16,7 +16,7 @@
 
 其中，Interval Mapping Module 和 Assembly Module 为命令行软件，输入为混池测序 DNA-Seq（ChIP-Seq/WGS）或 RNA-Seq 数据，可以一步生成包括性状关联区间、突变位点和新基因在内的多种结果。
 
-Web-based Annotation Module 为在线分析平台。Triti-Map 收集了小麦族各物种和六倍体小麦已有测序品种的基因组信息。统一进行了基因功能注释和转录因子结合位点预测，同时整合了各物种有代表性的表观修饰数据。该平台可以进行包括 SNP 注释与可视化展示、同源基因分析、小麦族共线性区间分析和新序列功能注释在内的多种分析，可以为小麦族基因克隆提供更加丰富的参考信息。
+Web-based Annotation Module 为[在线分析平台](http://bioinfo.sibs.ac.cn/tritimap/)。Triti-Map 收集了小麦族各物种和六倍体小麦已有测序品种的基因组信息。统一进行了基因功能注释和转录因子结合位点预测，同时整合了各物种有代表性的表观修饰数据。该平台可以进行包括 SNP 注释与可视化展示、同源基因分析、小麦族共线性区间分析和新序列功能注释在内的多种分析，可以为小麦族基因克隆提供更加丰富的参考信息。
 
 ### Triti-Map 分析流程图
 
@@ -533,7 +533,7 @@ seqid	hit_db	hit_id	hit_desc	hit_url	hsp_bit_score	hsp_align_len	hsp_identity	hs
 
 ## 在线注释模块
 
-Triti-Map 的上游分析结果可以配套[在线分析平台](https://github.com/fei0810/Triti-Map)进行后续分析和可视化展示。包括对 SNP 进行功能和表观修饰注释，对基因进行同源基因分析，对性状关联区间进行共线性分析，对特异性片段进行功能注释等。
+Triti-Map 的上游分析结果可以配套[在线分析平台](http://bioinfo.sibs.ac.cn/tritimap/)进行后续分析和可视化展示。包括对 SNP 进行功能和表观修饰注释，对基因进行同源基因分析，对性状关联区间进行共线性分析，对特异性片段进行功能注释等。
 
 **在线分析平台主要功能示意图**
 

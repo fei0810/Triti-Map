@@ -19,7 +19,6 @@
 #
 ###############################################################################
 
-
 input1=$(realpath $1)
 id1=$(basename $1 | sed 's/_denovo_scaffolds.fasta//')
 input2=$(realpath $2)
@@ -45,8 +44,8 @@ bioawk -v len=$length -c fastx '{if(length($seq)>=len){print ">"$name;print $seq
 
 # map to ref
 if [ $type == "dna" ]; then
-	bwa-mem2 mem -t $thread $genome ${dir}/temp.${id1}.scaffolds.500.fasta | samtools view -S -b - | samtools sort -@ $thread -o ${dir}/temp.${id1}.scaffolds.500.bam -
-	bwa-mem2 mem -t $thread $genome ${dir}/temp.${id2}.scaffolds.500.fasta | samtools view -S -b - | samtools sort -@ $thread -o ${dir}/temp.${id2}.scaffolds.500.bam -
+	bwa-mem2 mem -v 1 -t $thread $genome ${dir}/temp.${id1}.scaffolds.500.fasta | samtools view -S -b - | samtools sort -@ $thread -o ${dir}/temp.${id1}.scaffolds.500.bam -
+	bwa-mem2 mem -v 1 -t $thread $genome ${dir}/temp.${id2}.scaffolds.500.fasta | samtools view -S -b - | samtools sort -@ $thread -o ${dir}/temp.${id2}.scaffolds.500.bam -
 elif [ $type == "rna" ]; then
 	minimap2 -ax splice --split-prefix minimap_${id1} -I $mem $genome ${dir}/temp.${id1}.scaffolds.500.fasta -t 30 | samtools view -S -b - | samtools sort -o ${dir}/temp.${id1}.scaffolds.500.bam -
 	minimap2 -ax splice --split-prefix minimap_${id2} -I $mem $genome ${dir}/temp.${id2}.scaffolds.500.fasta -t 30 | samtools view -S -b - | samtools sort -o ${dir}/temp.${id2}.scaffolds.500.bam -
@@ -93,7 +92,7 @@ ln -s $database ${dir}/temp.${id1}2${id2}_samtools.region.fasta
 
 makeblastdb -in ${dir}/temp.${id1}2${id2}_samtools.region.fasta -dbtype nucl
 
-# map to database 
+# map to database
 blastn -db ${dir}/temp.${id1}2${id2}_samtools.region.fasta -query ${dir}/temp.${id1}_step2_candidate.fasta -out ${dir}/temp.${id1}_step3_candidate.outfmt6 -outfmt 6 -num_threads $thread
 cut -f1 ${dir}/temp.${id1}_step3_candidate.outfmt6 | sort -u >${dir}/temp.${id1}_step3_candidate.id
 seqkit grep -n -f ${dir}/temp.${id1}_step3_candidate.id ${dir}/temp.${id1}_step2_candidate.fasta >${dir}/temp.${id1}_step3_candidate.fasta
@@ -144,7 +143,7 @@ seqkit grep -n -v -f ${dir}/temp.${id2}_unmap_needfilter.id ${dir}/temp.${id2}_u
 cp ${dir}/temp.${id1}_step2_unmap.fasta $unmap1
 cp ${dir}/temp.${id2}_step2_unmap.fasta $unmap2
 
-if [ -d $dir/temp_output ];then
+if [ -d $dir/temp_output ]; then
 	rm -rf $dir/temp_output
 fi
 mkdir ${dir}/temp_output && mv ${dir}/temp.${id1}* ${dir}/temp.${id2}* ${dir}/temp_output
