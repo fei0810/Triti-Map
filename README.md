@@ -41,11 +41,13 @@ tritimap --help
 
 #### Installing from Docker
 
-You can also use [Triti-Map](https://hub.docker.com/r/fei0810/tritimap) via Docker. See [how to install Docker](https://docs.docker.com/engine/install/)
+You can also use [Triti-Map](https://hub.docker.com/r/fei0810/tritimap) via Docker. See [how to install Docker](https://docs.docker.com/engine/install/), then download and run this image using the following commands:
 
 ```sh
 # docker pull command
-docker pull fei0810/tritimap
+docker pull fei0810/tritimap:v0.9.3
+# run docker
+docker run -i -t fei0810/tritimap:v0.9.3 /bin/bash
 ```
 
 #### Installing from GitHub
