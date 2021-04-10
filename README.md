@@ -182,7 +182,7 @@ A complete catalog of Triti-Map results is shown below.
 
 Fei Zhao zhaofei920810@gmail.com
 
-Lab Home Page：http://bioinfo.sibs.ac.cn/zhanglab/
+Lab Home Page：http://bioinfo.cemps.ac.cn/zhanglab/
 
 Issues can be raised at: https://github.com/fei0810/Triti-Map/issues
 
