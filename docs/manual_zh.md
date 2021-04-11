@@ -92,6 +92,17 @@ python setup.py install
 
 说明：使用源码进行安装时，需要自行安装 Triti-Map 其它依赖软件，可以通过目录中的`tritimap_env.yaml`配合`conda`进行安装。
 
+### 使用 Docker 安装使用 Triti-Map
+
+你也可以通过 Docker 安装使用 Triti-Map, 查看 [如何安装 Docker](https://docs.docker.com/engine/install/)，然后通过下面的命令安装 Triti-Map:
+
+```sh
+# 下载 Triti-Map
+docker pull fei0810/tritimap:v0.9.3
+# 运行 Docker 镜像
+docker run -i -t fei0810/tritimap:v0.9.3 /bin/bash
+```
+
 ## 准备相关文件
 
 ### 基因组和注释文件
@@ -353,7 +364,7 @@ Options:
   -h, --help              Show this message and exit.
 ```
 
-因为完整的分析时间较长，建议使用 `screnn` 或类似程序置于服务器后台运行 Triti-Map。
+因为完整的分析时间可能较长，建议使用 `screen`（https://www.gnu.org/software/screen/）程序在服务器后台运行 Triti-Map。
 
 ### 查看和处理错误
 
@@ -497,7 +508,7 @@ CCACATCGCCGCCACGAGTCGTCTTCCCCGAGCACGGCCG
 
 de novo 组装序列示例 ID：`17655292:chr1A:2501389:378S202M:580:res`
 
-序列 ID 命名规则说哦：`原始组装序列ID:比对基因组序列所在染色体:比对基因组序列对应染色体位置:比对相关的CIGAR信息:序列长度:对应混池`
+序列 ID 命名规则说明：`原始组装序列ID:比对基因组序列所在染色体:比对基因组序列对应染色体位置:比对相关的CIGAR信息:序列长度:对应混池`
 
 `*_candiadate_denovo_pfam_anno.txt`：
 

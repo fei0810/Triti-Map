@@ -2,6 +2,8 @@
 ###### Basic Information ######
 ###############################
 
+# USAGE: https://github.com/fei0810/Triti-Map/wiki/preparing_configcsv
+
 # use EMBL-EBI hmmerscan and blast API need user email, required by EMBL-EBI API.
 email: your_email@xxx.com
 
