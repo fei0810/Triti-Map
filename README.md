@@ -4,7 +4,7 @@
 
 [![Anaconda-Server Badge](https://anaconda.org/bioconda/tritimap/badges/version.svg)](https://anaconda.org/bioconda/tritimap) [![Anaconda-Server Badge](https://anaconda.org/bioconda/tritimap/badges/latest_release_date.svg)](https://anaconda.org/bioconda/tritimap) [![Anaconda-Server Badge](https://anaconda.org/bioconda/tritimap/badges/downloads.svg)](https://anaconda.org/bioconda/tritimap) ![Docker Pulls](https://img.shields.io/docker/pulls/fei0810/tritimap) ![Anaconda-Server Badge](https://anaconda.org/bioconda/tritimap/badges/license.svg)
 
-**Triti-Map** is a Snakemake-based pipeline for gene mapping in Triticeae, which contains a suite of user-friendly computational packages and [web-interface](https://bioinfo.cemps.ac.cn/tritimap) integrating multi-omics data from Triticeae species including genomic, epigenomic, evolutionary and homologous information.
+**Triti-Map** is a Snakemake-based pipeline for gene mapping in Triticeae, which contains a suite of user-friendly computational packages and [web-interface](http://bioinfo.cemps.ac.cn/tritimap/) integrating multi-omics data from Triticeae species including genomic, epigenomic, evolutionary and homologous information.
 
 **Triti-Map** could efficiently explore trait-related genes or functional elements not present in the reference genome and reduce the time and labor required for gene mapping in large genome species.
 
@@ -170,7 +170,7 @@ A complete catalog of Triti-Map results is shown below.
 
 ## Triti-Map Annotation Platform
 
-[Triti-Map Annotation Platform](https://bioinfo.cemps.ac.cn/tritimap) is an online analysis module of Triti-Map. To locate causal variants and candidate genes or regulatory elements, Triti-Map integrated multi-omics data and various information from Triticeae species to provide a functional and evolutionary characterization of SNPs, genes, genomic regions, and new sequences related to the target trait.
+[Triti-Map Annotation Platform](http://bioinfo.cemps.ac.cn/tritimap/) is an online analysis module of Triti-Map. To locate causal variants and candidate genes or regulatory elements, Triti-Map integrated multi-omics data and various information from Triticeae species to provide a functional and evolutionary characterization of SNPs, genes, genomic regions, and new sequences related to the target trait.
 
 The platform can perform various analyses, including SNP annotation and visual display, homologous gene analysis, collinearity analysis, and new sequence function annotation, providing richer reference information for Triticeae gene mapping.
 
