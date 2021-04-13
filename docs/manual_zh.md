@@ -178,7 +178,7 @@ tritimap init
 - sample.csv：原始分析数据样本信息文件
 - region.csv：序列组装过滤区间文件（仅在单独使用`Assembly Module`时需要）
 
-#### 修改样本信息文件 cample.csv
+#### 修改样本信息文件 sample.csv
 
 样本信息文件为`,`分割的 CSV 文件，包括数据的样本名、测序类型、混池基因型和文件位置等信息。
 
