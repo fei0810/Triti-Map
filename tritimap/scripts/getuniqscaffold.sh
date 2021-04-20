@@ -32,6 +32,8 @@ type=$7
 mem=$8
 output1=$9
 output2=${10}
+output1_summary=${13}
+output2_summary=${14}
 unmap1=${11}
 unmap2=${12}
 #TODO add to config file
@@ -99,7 +101,7 @@ cp ${dir}/temp.${id1}_step3_candidate.fasta $output1
 
 cut -f1,2,3,4,9,10 ${dir}/temp.${id1}_step3_candidate.outfmt6 | sed 's/:/\t/6;s/-/\t/' | awk 'BEGIN{OFS="\t"}{print $2,$3+$7,$3+$8,$6,$5,$1}' | uniq -f 5 | awk '{print $NF"\t"$0}' | cut -f1-6 >${dir}/temp.${id1}_candidate_denovo2ref.info.txt
 
-cat <(awk 'BEGIN{print "seqid\tchrom\tstart\tend\thit_length\thit_score"}') ${dir}/temp.${id1}_candidate_denovo2ref.info.txt >${dir}/${id1}_candidate_denovo2ref.info.txt
+cat <(awk 'BEGIN{print "seqid\tchrom\tstart\tend\thit_length\thit_score"}') ${dir}/temp.${id1}_candidate_denovo2ref.info.txt >$output1_summary
 
 blastn -db ${dir}/temp.${id1}2${id2}_samtools.region.fasta -query ${dir}/temp.${id2}_step2_candidate.fasta -out ${dir}/temp.${id2}_step3_candidate.outfmt6 -outfmt 6 -num_threads $thread
 cut -f1 ${dir}/temp.${id2}_step3_candidate.outfmt6 | sort -u >${dir}/temp.${id2}_step3_candidate.id
@@ -109,7 +111,7 @@ cp ${dir}/temp.${id2}_step3_candidate.fasta $output2
 
 cut -f1,2,3,4,9,10 ${dir}/temp.${id2}_step3_candidate.outfmt6 | sed 's/:/\t/6;s/-/\t/' | awk 'BEGIN{OFS="\t"}{print $2,$3+$7,$3+$8,$6,$5,$1}' | uniq -f 5 | awk '{print $NF"\t"$0}' | cut -f1-6 >${dir}/temp.${id2}_candidate_denovo2ref.info.txt
 
-cat <(awk 'BEGIN{print "seqid\tchrom\tstart\tend\thit_length\thit_score"}') ${dir}/temp.${id2}_candidate_denovo2ref.info.txt >${dir}/${id2}_candidate_denovo2ref.info.txt
+cat <(awk 'BEGIN{print "seqid\tchrom\tstart\tend\thit_length\thit_score"}') ${dir}/temp.${id2}_candidate_denovo2ref.info.txt >$output2_summary
 
 #### add feizhao treat unmap scaffolds ####
 

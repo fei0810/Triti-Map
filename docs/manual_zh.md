@@ -98,9 +98,9 @@ python setup.py install
 
 ```sh
 # 下载 Triti-Map
-docker pull fei0810/tritimap:v0.9.3
+docker pull fei0810/tritimap:v0.9.4
 # 运行 Docker 镜像
-docker run -i -t fei0810/tritimap:v0.9.3 /bin/bash
+docker run -i -t fei0810/tritimap:v0.9.4 /bin/bash
 ```
 
 ## 准备相关文件

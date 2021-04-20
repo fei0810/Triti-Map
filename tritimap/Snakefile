@@ -202,6 +202,7 @@ elif config['module'] == "only_assembly":
             dir_path+"/07_assembleout/{bulk}_candidate_denovo_pfam_anno.txt",
             dir_path+"/07_assembleout/{bulk}_candidate_denovo_pfam_anno.fasta",
             dir_path+"/07_assembleout/{bulk}_candidate_denovo_blast_anno.txt",
+            dir_path+"/07_assembleout/{bulk}_candidate_denovo_summary_info.txt",
             dir_path+"/07_assembleout/{bulk}_unmap_denovo.fasta",
             dir_path+"/07_assembleout/{bulk}_unmap_denovo_pfam_anno.txt",
             dir_path+"/07_assembleout/{bulk}_unmap_denovo_pfam_anno.fasta",
@@ -226,6 +227,7 @@ elif config['module'] == "all":
             dir_path+"/07_assembleout/{bulk}_candidate_denovo_pfam_anno.txt",
             dir_path+"/07_assembleout/{bulk}_candidate_denovo_pfam_anno.fasta",
             dir_path+"/07_assembleout/{bulk}_candidate_denovo_blast_anno.txt",
+            dir_path+"/07_assembleout/{bulk}_candidate_denovo_summary_info.txt",
             dir_path+"/07_assembleout/{bulk}_unmap_denovo.fasta",
             dir_path+"/07_assembleout/{bulk}_unmap_denovo_pfam_anno.txt",
             dir_path+"/07_assembleout/{bulk}_unmap_denovo_pfam_anno.fasta",
@@ -261,6 +263,7 @@ else:
     include: "rules/denovo_scaffold_filter.smk"
 include: "rules/pfam_annotation.smk"
 include: "rules/blast_annotation.smk"
+include: "rules/candidate_summary.smk"
 
 onsuccess:
     print("Workflow finished without errors.")
