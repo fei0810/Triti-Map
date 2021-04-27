@@ -32,7 +32,7 @@ if [ -e ${dir}/07_assembleout/${id} ]; then
 	rm -rf ${dir}/07_assembleout/${id}
 fi
 
-mkdir ${dir}/07_assembleout/${id}
+mkdir -p ${dir}/07_assembleout/${id}
 
 if [ $type == "dna" ]; then
 	abyss-pe -C ${dir}/07_assembleout/${id} j=$thread k=90 name=$id in=''$R1' '$R2''
