@@ -254,7 +254,7 @@ To run the Triti-Map main program, you need to modify the parameters in the conf
   - `pop_struc`: **Important** , the population structure of the pool samples. If the data of the pool is F2 generation, fill in **F2**; if the data of the pool is RIL population or all individuals are homozygous, fill in **RIL**.
   - `bulksize`: The number of samples in the pool, e.g., if each pool consists of 30 samples, then fill in `30`.
   - `winsize`: No modification is needed, the length of the sliding window for data correction, default is `1000000`(1Mb).
-  - `filter_probs`: **Important**, the percentage of the original results to filter based on Delta SNPindex and SNPconut/Mb. If the value is 0.75, it means that the average Delta SNPindex and the average number of SNPs per 1Mb of the candidate interval should be both greater than 75% of the corresponding values of all original results.
+  - `filter_percentage`: **Important**, the percentage of the original results to filter based on Delta SNPindex and SNPconut/Mb. If the value is 0.75, it means that the average Delta SNPindex and the average number of SNPs per 1Mb of the candidate interval should be both greater than 75% of the corresponding values of all original results.
   - `fisher_p`: No modification is needed, filter the SNP loci of the trait association interval and calculate the pvalue of each locus using fisher test, default is `0.0001`.
   - `min_length`: No modification is needed, the minimum length of the candidate trait association interval. For large genome species such as wheat, the default length is `1000000`(1Mb).
 
@@ -596,13 +596,13 @@ In the configuration file `config.yaml`, set the parameter `denovo_filter_method
 
 In this mode, the assembled pool-specific sequences will be compared with all collinearity regions, thus screening for new genes that may be associated with the trait in a larger scale.
 
-**Q: How should the parameter `filter_probs` be set when Triti-Map filters the original trait-related intervals?**
+**Q: How should the parameter `filter_percentage` be set when Triti-Map filters the original trait-related intervals?**
 
-A: There is no fixed setting standard for `filter_probs`, but it is related to the accuracy of sample sampling in the pool, the sequencing depth of the pool and the purity of the sample material.
+A: There is no fixed setting standard for `filter_percentage`, but it is related to the accuracy of sample sampling in the pool, the sequencing depth of the pool and the purity of the sample material.
 
-For two mixed pools with pure material and sufficient sequencing depth, the `filter_probs` can be set to `0.75` or above; for non-pure material or low sequencing depth, the `filter_probs` can be set to `0.5`.
+For two mixed pools with pure material and sufficient sequencing depth, the `filter_percentage` can be set to `0.75` or above; for non-pure material or low sequencing depth, the `filter_percentage` can be set to `0.5`.
 
-If there is no high confidence interval due to unreasonable setting of `filter_probs`, Triti-Map will report an error automatically. Then you can reset the appropriate `filter_probs` according to the original result in `xxx_yyy_qtlseqr_raw_region.txt`, and just re-run the main program.
+If there is no high confidence interval due to unreasonable setting of `filter_percentage`, Triti-Map will report an error automatically. Then you can reset the appropriate `filter_percentage` according to the original result in `xxx_yyy_qtlseqr_raw_region.txt`, and just re-run the main program.
 
 **Q: What performance servers are required to run Triti-Map?**
 

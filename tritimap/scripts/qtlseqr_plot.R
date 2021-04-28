@@ -41,7 +41,7 @@ pop <- snakemake@params[["pop_struc"]]
 bulksize <- as.numeric(snakemake@params[["bulksize"]])
 winsize <- as.numeric(snakemake@params[["winsize"]])
 
-filter_probs = as.numeric(snakemake@params[["filterprobs"]])
+filter_percentage <- as.numeric(snakemake@params[["filterpercentage"]])
 f_pvalue <- as.numeric(snakemake@params[["pvalue"]])
 min_length <- as.numeric(snakemake@params[["min_length"]])
 
@@ -56,7 +56,7 @@ qtl_countl <- snakemake@output[["qtlcount_l"]]
 qtl_indexp <- snakemake@output[["qtlindex_p"]]
 qtl_indexl <- snakemake@output[["qtlindex_l"]]
 
-### run qtlseqr 
+### run qtlseqr
 
 snpdat <- read_tsv(snpraw)
 
@@ -104,7 +104,7 @@ rawout <- getQTLTable(SNPset = datqtl, method = "QTLseq", interval = 99, export 
 
 # filter raw region by snp count and region length, 10 is suitable for EMS data?
 out <- rawout %>% filter(nSNPs >= 10 & avgSNPs_Mb >= 10 &
-                            length >= min_length)
+  length >= min_length)
 
 # if no region left
 if (nrow(out) < 1) {
@@ -114,10 +114,10 @@ if (nrow(out) < 1) {
 }
 
 # sort by abs index
-out <- out[order(abs(out$avgDeltaSNP),decreasing = T),]
+out <- out[order(abs(out$avgDeltaSNP), decreasing = T), ]
 
 # snp conunt > xx% and snp index > xx%
-filter_out <- out[abs(out$avgDeltaSNP)>=quantile(abs(out$avgDeltaSNP), probs = filter_probs) & out$avgSNPs_Mb >= quantile(out$avgSNPs_Mb,probs = filter_probs),]
+filter_out <- out[abs(out$avgDeltaSNP) >= quantile(abs(out$avgDeltaSNP), probs = filter_percentage) & out$avgSNPs_Mb >= quantile(out$avgSNPs_Mb, probs = filter_percentage), ]
 
 # if no region left
 if (nrow(filter_out) < 1) {
@@ -133,16 +133,16 @@ print("qtlseq is down")
 snpfilter <- data.frame(matrix(ncol = length(datqtl), nrow = 0))
 names(snpfilter) <- names(datqtl)
 for (i in seq_len(nrow(filter_out))) {
-  snptemp <-datqtl[datqtl$CHROM==filter_out$CHROM[i] & datqtl$POS >= filter_out$start[i] & datqtl$POS <= filter_out$end[i] & datqtl$fisher_p < f_pvalue,]
+  snptemp <- datqtl[datqtl$CHROM == filter_out$CHROM[i] & datqtl$POS >= filter_out$start[i] & datqtl$POS <= filter_out$end[i] & datqtl$fisher_p < f_pvalue, ]
   snpfilter <- rbind(snpfilter, snptemp)
 }
 
 print("snpinfo is down")
 
 snpfilter$CHROM <- as.character(snpfilter$CHROM)
-snpfilter$POS  <- as.double(snpfilter$POS)
+snpfilter$POS <- as.double(snpfilter$POS)
 snpdat$`#CHROM` <- as.character(snpdat$`#CHROM`)
-snpdat$POS  <- as.double(snpdat$POS)
+snpdat$POS <- as.double(snpdat$POS)
 
 snpmerge <- left_join(snpfilter, snpdat, by = c("CHROM" = "#CHROM", "POS" = "POS")) %>% select(c(1, 2, 20, 21, 3:18))
 
@@ -156,7 +156,7 @@ write.table(out,
   quote = F, sep = "\t", row.names = F, col.names = T
 )
 
-write.table(filter_out ,
+write.table(filter_out,
   file = qtl_regionout,
   quote = F, sep = "\t", row.names = F, col.names = T
 )
@@ -166,7 +166,7 @@ write.table(snpmerge,
   quote = F, sep = "\t", row.names = F, col.names = T
 )
 
-### plot all figure 
+### plot all figure
 
 qtlplot <- function(rawdat, var = "deltaSNP", type = "point", chroms = NULL) {
   rawdat <-
@@ -193,7 +193,7 @@ qtlplot <- function(rawdat, var = "deltaSNP", type = "point", chroms = NULL) {
       ),
       labels = function(x) {
         format(round(x / 1e6, 1),
-               trim = T, scientific = F
+          trim = T, scientific = F
         )
       },
       name = "Genomic Position (Mb)"
@@ -285,7 +285,7 @@ if (length(filter_out$CHROM) > 0) {
         limits = c(start - 3 * 1e6, end + 3 * 1e6),
         labels = function(x) {
           format(round(x / 1e6, 1),
-                 trim = T, scientific = F
+            trim = T, scientific = F
           )
         },
         name = "Genomic Position (Mb)"
@@ -293,13 +293,13 @@ if (length(filter_out$CHROM) > 0) {
       geom_line(aes(POS, tricubeDeltaSNP)) +
       geom_point(aes(POS, tricubeDeltaSNP)) +
       annotate("rect",
-               xmin = c(start), xmax = c(end),
-               ymin = -Inf, ymax = Inf,
-               alpha = 0.2, fill = c("#b4aee8")
+        xmin = c(start), xmax = c(end),
+        ymin = -Inf, ymax = Inf,
+        alpha = 0.2, fill = c("#b4aee8")
       ) +
       labs(
         title = bquote(.(pool1) ~ "vs" ~ .(pool2) ~
-                         .(chrom) ~ ":" ~ .(start) ~ "-" ~ .(end)),
+        .(chrom) ~ ":" ~ .(start) ~ "-" ~ .(end)),
         y = expression(Delta * "SNPindex"),
         x = "Genomic Position (Mb)"
       ) +

@@ -10,7 +10,8 @@ rule uniqScaffold:
         datatype = config['datatype'],
         genome = config['ref']['genome'],
         runmodule = config['module'],
-        scriptdir = script_dir
+        scriptdir = script_dir,
+        blastfilter = config['scaffold_uniq_percentage']
     output:
         scaffold1 = join(dir_path+"/07_assembleout", bulkname[0] + "_candidate_denovo.fasta"),
         scaffold2 = join(dir_path+"/07_assembleout", bulkname[1] + "_candidate_denovo.fasta"),
@@ -24,7 +25,7 @@ rule uniqScaffold:
         join(dir_path+"/logs", "_".join(samples.bulk.drop_duplicates()) + "_uniqscaffold.log")
     shell:"""
     set +e
-    bash {params.scriptdir}/getuniqscaffold.sh {input.fa} {input.region} {params.length} {params.genome} {threads} {params.datatype} {params.memory} {output.scaffold1} {output.scaffold2} {output.unmap1} {output.unmap2} {output.scaffold1summary} {output.scaffold2summary}  > {log} 2>&1
+    bash {params.scriptdir}/getuniqscaffold.sh {input.fa} {input.region} {params.length} {params.genome} {threads} {params.datatype} {params.memory} {output.scaffold1} {output.scaffold2} {output.unmap1} {output.unmap2} {output.scaffold1summary} {output.scaffold2summary} {params.blastfilter} > {log} 2>&1
     exitcode=$?
     if [ $exitcode -eq 1 ]
     then

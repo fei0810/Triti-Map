@@ -8,7 +8,7 @@ rule QTLseqr_plot:
         pop_struc = config['snpindex']['pop_struc'],
         bulksize = config['snpindex']['bulksize'],
         winsize = config['snpindex']['winsize'],
-        filterprobs = config['snpindex']['filter_probs'],
+        filterpercentage = config['snpindex']['filter_percentage'],
         pvalue = config['snpindex']['fisher_p'],
         min_length = config['snpindex']['min_length'],
         dirname = dir_path

@@ -57,7 +57,7 @@ snpindex:
   winsize: 1000000
   # delta snpindex and snp-conut/Mb percentage of filtration.
   # 0.75: candidate region with average delta snpindex and snp-conut/1Mb both greater than 75% of all raw regions will be retained.
-  filter_probs: 0.75
+  filter_percentage: 0.75
   # SNP fesher test filter pvalue, used to filter candidate SNP. No change needed!
   fisher_p: 0.0001
   # min length of candidate region, for Triticeae species 1000000(1Mb) is suggested. No change needed!
@@ -78,6 +78,9 @@ abyss:
 # the de novo scaffolds min length. No change needed!
 scaffold:
   minlength: 500
+# how to define bulk specific scaffold(sequence): default is 0.85. No change needed!
+# 0.85: blast percentage of identical matches < 85% AND blast match length / query length < 85%
+scaffold_uniq_percentage: 0.85
 
 # de novo scaffolds filter method: Triti-Map/external_region/external_fasta
 # Triti-Map: auto filter by Triti-Map method, don't need external file

@@ -9,7 +9,8 @@ rule uniqScaffoldByRegion:
         memory = config['memory'],
         datatype = config['datatype'],
         genome = config['ref']['genome'],
-        scriptdir = script_dir
+        scriptdir = script_dir,
+        blastfilter = config['scaffold_uniq_percentage']
     output:
         region = join(dir_path+"/06_regionout", "_".join(samples.bulk.drop_duplicates())+ "_qtlseqr_filter_region.txt"),
         scaffold1 = join(dir_path+"/07_assembleout", bulkname[0] + "_candidate_denovo.fasta"),
@@ -25,7 +26,7 @@ rule uniqScaffoldByRegion:
     shell:"""
     set +e
     cat {input.region} | tr ',' '\t' | awk '{{print $1"\tqtl\t"$2"\t"$3}}' > {output.region}
-    bash {params.scriptdir}/getuniqscaffold.sh {input.fa} {output.region} {params.length} {params.genome} {threads} {params.datatype} {params.memory} {output.scaffold1} {output.scaffold2} {output.unmap1} {output.unmap2} {output.scaffold1summary} {output.scaffold2summary} > {log} 2>&1
+    bash {params.scriptdir}/getuniqscaffold.sh {input.fa} {output.region} {params.length} {params.genome} {threads} {params.datatype} {params.memory} {output.scaffold1} {output.scaffold2} {output.unmap1} {output.unmap2} {output.scaffold1summary} {output.scaffold2summary} {params.blastfilter} > {log} 2>&1
     exitcode=$?
     if [ $exitcode -eq 1 ]
     then
