@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-
+set -e
 ###############################################################################
 #
 # Author contact:
@@ -38,7 +38,7 @@ echo ${dir}/temp.pfam.${name}long.id
 
 if [ $(awk 'END{print NR}' ${dir}/temp.pfam.${name}long.id) -gt 10000 ]; then
 	echo "Your function annotation input sequences is more than 10000, please filter sequences first"
-	exit
+	exit 1
 fi
 
 seqkit grep -f ${dir}/temp.pfam.${name}long.id ${dir}/temp.pfam.${name}pep >${dir}/temp.pfam.${name}long.pep

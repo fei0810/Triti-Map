@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-
+set -e
 ###############################################################################
 #
 # Author contact:
@@ -45,7 +45,7 @@ awk -v depth=$depth -v minindex=$minindex '$4>depth && ($5>=minindex || $5<=-min
 
 bedmap --skip-unmapped --delim '\t' --header --echo $input1 $output1 | cat <(head -n1 $input1) - >${output2}
 
-if [ -d $dir/temp_output ];then
+if [ -d $dir/temp_output ]; then
 	rm -rf $dir/temp_output
 fi
 mkdir $dir/temp_output && mv $dir/temp.${id}* $dir/temp_output

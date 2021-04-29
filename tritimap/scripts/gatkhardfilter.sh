@@ -1,3 +1,5 @@
+#!/usr/bin/env sh
+set -e
 ###############################################################################
 #
 # Author contact:
@@ -71,7 +73,7 @@ gatk --java-options "-Xmx10G -Djava.io.tmpdir=./" \
 	-V $dir/temp_${id}_filter_gatk.vcf \
 	-O $output
 
-if [ -d $dir/temp_output ];then
+if [ -d $dir/temp_output ]; then
 	rm -rf $dir/temp_output
 fi
 mkdir $dir/temp_output && mv $dir/temp_${id}* $dir/temp_output
