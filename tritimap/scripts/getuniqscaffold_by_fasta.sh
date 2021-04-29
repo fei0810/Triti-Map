@@ -38,7 +38,7 @@ unmap1=${11}
 unmap2=${12}
 #done add to config file
 blast_ident=${15}
-blast_pre=${15}
+blast_length=${16}
 
 # get longer than 500bp scaffold
 bioawk -v len=$length -c fastx '{if(length($seq)>=len){print ">"$name;print $seq}}' $input1 >${dir}/temp.${id1}.scaffolds.500.fasta
@@ -67,15 +67,15 @@ blastn -db ${dir}/temp.${id1}_step1_candidate.fasta -query ${dir}/temp.${id2}_st
 blastn -db ${dir}/temp.${id2}_step1_candidate.fasta -query ${dir}/temp.${id1}_step1_candidate.fasta -out ${dir}/temp.${id1}2${id2}_step1_candidate.outfmt6 -outfmt 6 -num_threads $thread
 
 # strictly filter use || ; loosely filter use &&
-paste ${dir}/temp.${id1}2${id2}_step1_candidate.outfmt6 <(cat ${dir}/temp.${id1}2${id2}_step1_candidate.outfmt6 | cut -f1 | tr ':' '\t' | awk '{print $(NF-1)}') | awk '$3=$3/100 {print $0"\t"$4/$NF}' | awk -v ident=$blast_ident -v pre=$blast_pre '$3>ident && $NF > pre' | cut -f1 | sort -u >${dir}/temp.${id1}_needfilter.id1
+paste ${dir}/temp.${id1}2${id2}_step1_candidate.outfmt6 <(cat ${dir}/temp.${id1}2${id2}_step1_candidate.outfmt6 | cut -f1 | tr ':' '\t' | awk '{print $(NF-1)}') | awk 'BEGIN{OFS="\t"}$3=$3/100{print $0"\t"$4/$NF}' | awk -v ident=$blast_ident -v pre=$blast_length '$3>ident && $NF > pre' | cut -f1 | sort -u >${dir}/temp.${id1}_needfilter.id1
 
-paste ${dir}/temp.${id2}2${id1}_step1_candidate.outfmt6 <(cat ${dir}/temp.${id2}2${id1}_step1_candidate.outfmt6 | cut -f2 | tr ':' '\t' | awk '{print $(NF-1)}') | awk '$3=$3/100 {print $0"\t"$4/$NF}' | awk -v ident=$blast_ident -v pre=$blast_pre '$3>ident && $NF > pre' | cut -f2 | sort -u >${dir}/temp.${id1}_needfilter.id2
+paste ${dir}/temp.${id2}2${id1}_step1_candidate.outfmt6 <(cat ${dir}/temp.${id2}2${id1}_step1_candidate.outfmt6 | cut -f2 | tr ':' '\t' | awk '{print $(NF-1)}') | awk 'BEGIN{OFS="\t"}$3=$3/100{print $0"\t"$4/$NF}' | awk -v ident=$blast_ident -v pre=$blast_length '$3>ident && $NF > pre' | cut -f2 | sort -u >${dir}/temp.${id1}_needfilter.id2
 
 cat ${dir}/temp.${id1}_needfilter.id1 ${dir}/temp.${id1}_needfilter.id2 | sort -u >${dir}/temp.${id1}_needfilter.id
 
-paste ${dir}/temp.${id1}2${id2}_step1_candidate.outfmt6 <(cat ${dir}/temp.${id1}2${id2}_step1_candidate.outfmt6 | cut -f2 | tr ':' '\t' | awk '{print $(NF-1)}') | awk '$3=$3/100 {print $0"\t"$4/$NF}' | awk -v ident=$blast_ident -v pre=$blast_pre '$3>ident && $NF > pre' | cut -f2 | sort -u >${dir}/temp.${id2}_needfilter.id1
+paste ${dir}/temp.${id1}2${id2}_step1_candidate.outfmt6 <(cat ${dir}/temp.${id1}2${id2}_step1_candidate.outfmt6 | cut -f2 | tr ':' '\t' | awk '{print $(NF-1)}') | awk 'BEGIN{OFS="\t"}$3=$3/100{print $0"\t"$4/$NF}' | awk -v ident=$blast_ident -v pre=$blast_length '$3>ident && $NF > pre' | cut -f2 | sort -u >${dir}/temp.${id2}_needfilter.id1
 
-paste ${dir}/temp.${id2}2${id1}_step1_candidate.outfmt6 <(cat ${dir}/temp.${id2}2${id1}_step1_candidate.outfmt6 | cut -f1 | tr ':' '\t' | awk '{print $(NF-1)}') | awk '$3=$3/100 {print $0"\t"$4/$NF}' | awk -v ident=$blast_ident -v pre=$blast_pre '$3>ident && $NF > pre' | cut -f1 | sort -u >${dir}/temp.${id2}_needfilter.id2
+paste ${dir}/temp.${id2}2${id1}_step1_candidate.outfmt6 <(cat ${dir}/temp.${id2}2${id1}_step1_candidate.outfmt6 | cut -f1 | tr ':' '\t' | awk '{print $(NF-1)}') | awk 'BEGIN{OFS="\t"}$3=$3/100{print $0"\t"$4/$NF}' | awk -v ident=$blast_ident -v pre=$blast_length '$3>ident && $NF > pre' | cut -f1 | sort -u >${dir}/temp.${id2}_needfilter.id2
 
 cat ${dir}/temp.${id2}_needfilter.id1 ${dir}/temp.${id2}_needfilter.id2 | sort -u >${dir}/temp.${id2}_needfilter.id
 
@@ -127,15 +127,15 @@ makeblastdb -in ${dir}/temp.${id2}_unmap.fasta -dbtype nucl
 blastn -db ${dir}/temp.${id1}_unmap.fasta -query ${dir}/temp.${id2}_unmap.fasta -out ${dir}/temp.${id2}2${id1}_unmap.outfmt6 -outfmt 6 -num_threads $thread
 blastn -db ${dir}/temp.${id2}_unmap.fasta -query ${dir}/temp.${id1}_unmap.fasta -out ${dir}/temp.${id1}2${id2}_unmap.outfmt6 -outfmt 6 -num_threads $thread
 
-paste ${dir}/temp.${id1}2${id2}_unmap.outfmt6 <(cat ${dir}/temp.${id1}2${id2}_unmap.outfmt6 | cut -f1 | tr ':' '\t' | awk '{print $(NF-1)}') | awk '$3=$3/100 {print $0"\t"$4/$NF}' | awk -v ident=$blast_ident -v pre=$blast_pre '$3>ident && $NF > pre' | cut -f1 | sort -u >${dir}/temp.${id1}_unmap_needfilter.id1
+paste ${dir}/temp.${id1}2${id2}_unmap.outfmt6 <(cat ${dir}/temp.${id1}2${id2}_unmap.outfmt6 | cut -f1 | tr ':' '\t' | awk '{print $(NF-1)}') | awk 'BEGIN{OFS="\t"}$3=$3/100{print $0"\t"$4/$NF}' | awk -v ident=$blast_ident -v pre=$blast_length '$3>ident && $NF > pre' | cut -f1 | sort -u >${dir}/temp.${id1}_unmap_needfilter.id1
 
-paste ${dir}/temp.${id2}2${id1}_unmap.outfmt6 <(cat ${dir}/temp.${id2}2${id1}_unmap.outfmt6 | cut -f2 | tr ':' '\t' | awk '{print $(NF-1)}') | awk '$3=$3/100 {print $0"\t"$4/$NF}' | awk -v ident=$blast_ident -v pre=$blast_pre '$3>ident && $NF > pre' | cut -f2 | sort -u >${dir}/temp.${id1}_unmap_needfilter.id2
+paste ${dir}/temp.${id2}2${id1}_unmap.outfmt6 <(cat ${dir}/temp.${id2}2${id1}_unmap.outfmt6 | cut -f2 | tr ':' '\t' | awk '{print $(NF-1)}') | awk 'BEGIN{OFS="\t"}$3=$3/100{print $0"\t"$4/$NF}' | awk -v ident=$blast_ident -v pre=$blast_length '$3>ident && $NF > pre' | cut -f2 | sort -u >${dir}/temp.${id1}_unmap_needfilter.id2
 
 cat ${dir}/temp.${id1}_unmap_needfilter.id1 ${dir}/temp.${id1}_unmap_needfilter.id2 | sort -u >${dir}/temp.${id1}_unmap_needfilter.id
 
-paste ${dir}/temp.${id1}2${id2}_unmap.outfmt6 <(cat ${dir}/temp.${id1}2${id2}_unmap.outfmt6 | cut -f2 | tr ':' '\t' | awk '{print $(NF-1)}') | awk '$3=$3/100 {print $0"\t"$4/$NF}' | awk -v ident=$blast_ident -v pre=$blast_pre '$3>ident && $NF > pre' | cut -f2 | sort -u >${dir}/temp.${id2}_unmap_needfilter.id1
+paste ${dir}/temp.${id1}2${id2}_unmap.outfmt6 <(cat ${dir}/temp.${id1}2${id2}_unmap.outfmt6 | cut -f2 | tr ':' '\t' | awk '{print $(NF-1)}') | awk 'BEGIN{OFS="\t"}$3=$3/100{print $0"\t"$4/$NF}' | awk -v ident=$blast_ident -v pre=$blast_length '$3>ident && $NF > pre' | cut -f2 | sort -u >${dir}/temp.${id2}_unmap_needfilter.id1
 
-paste ${dir}/temp.${id2}2${id1}_unmap.outfmt6 <(cat ${dir}/temp.${id2}2${id1}_unmap.outfmt6 | cut -f1 | tr ':' '\t' | awk '{print $(NF-1)}') | awk '$3=$3/100 {print $0"\t"$4/$NF}' | awk -v ident=$blast_ident -v pre=$blast_pre '$3>ident && $NF > pre' | cut -f1 | sort -u >${dir}/temp.${id2}_unmap_needfilter.id2
+paste ${dir}/temp.${id2}2${id1}_unmap.outfmt6 <(cat ${dir}/temp.${id2}2${id1}_unmap.outfmt6 | cut -f1 | tr ':' '\t' | awk '{print $(NF-1)}') | awk 'BEGIN{OFS="\t"}$3=$3/100{print $0"\t"$4/$NF}' | awk -v ident=$blast_ident -v pre=$blast_length '$3>ident && $NF > pre' | cut -f1 | sort -u >${dir}/temp.${id2}_unmap_needfilter.id2
 
 cat ${dir}/temp.${id2}_unmap_needfilter.id1 ${dir}/temp.${id2}_unmap_needfilter.id2 | sort -u >${dir}/temp.${id2}_unmap_needfilter.id
 

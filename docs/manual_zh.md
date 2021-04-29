@@ -265,8 +265,11 @@ chr7A,724000000,730000000
   - `bulksize`：混池样本数量，如每个混池由 30 个样本混合，则填写 **30**。
   - `winsize`：无需修改，进行数据矫正时的滑窗长度，默认为 1000000(1Mb)。
   - `filter_percentage`：**重要**，根据 Delta snpindex 和 snpconut/Mb 对原始定位结果进行过滤的百分比。如果该值为 0.75，则表示候选定位区间的平均 Delta snpindex 和每 1Mb 的平均 SNP 数量要同时大于所有原始结果对应数值的 75%。
-  - `fisher_p`: 无需修改，过滤性状关联区间的 SNP 位点，使用 fisher test 计算每个位点的 pvalue，默认为为 0.0001。
+  - `fisher_p`: 无需修改，过滤性状关联区间的 SNP 位点，使用 fisher test 计算每个位点的 pvalue，默认为 0.0001。
   - `min_length`：候选性状关联区间的最小长度，针对小麦族等大基因组物种，默认为 1000000(1Mb)，无需修改。
+- `bulk_specific`: **重要**，如何定义混池特异性序列
+  - `identical_percentage`: 两组混池组装序列 blast 比对结果的 identical 过滤值，默认为 0.85，表示 identical 大于 85%的序列将会被过滤掉。
+  - `length_percentage`：两组混池组装序列 blast 比对结果中比对长度占序列总长的比例，默认为 0.85，表示比对长度超过总长 85%的序列将会被过滤掉。
 - `merge_lib`：如何处理同一混池的多组不同修饰数据。**默认为`merge`**，即先进行样本合并再进行组装，可以得到更好的结果；如果处理六倍体小麦等大基因组数据且服务器内存小于 300G 时，可以修改为`split`，即对每一组数据单独组装再合并进行后续分析。
 - `memory`：转录组序列使用 SPAdes 进行组装时可用最大内存，`300` 表示 300G。
 - `denovo_filter_method`: **重要**，混池特异性序列过滤方式，在仅运行组装模块(only_assembly)时有效。设置为`external_region`表示用户在`region.csv`文件中自定义过滤区间；设置为`external_fasta`表示用户使用自己准备的外部 fasta 序列作为过滤数据库，请参考 Q&A。

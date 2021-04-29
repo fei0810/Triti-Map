@@ -28,10 +28,10 @@ output=$6
 dir=$(dirname $input)
 name=$(basename $input | sed 's/fasta//')
 
-if [ -d ${dir}/temp.blast.${name}split ];then
+if [ -d ${dir}/temp.blast.${name}split ]; then
 	rm -rf ${dir}/temp.blast.${name}split
 fi
-seqkit split -s 1 --out-dir ${dir}/temp.blast.${name}split ${input} 
+seqkit split -s 1 --out-dir ${dir}/temp.blast.${name}split ${input}
 
 #use EBI API get json resoults
 for j in $(ls ${dir}/temp.blast.${name}split/*.fasta); do
@@ -51,7 +51,7 @@ done
 
 cat <(awk 'BEGIN{print "seqid\thit_db\thit_id\thit_desc\thit_url\thsp_bit_score\thsp_align_len\thsp_identity\thsp_query_from\thsp_query_to\thsp_hit_from\thsp_hit_to"}') <(cat ${dir}/temp.blast.${name}split/*table.top5hit.txt | grep -v 'seqid') >${output}
 
-if [ ! -d $dir/temp_output ];then
+if [ ! -d $dir/temp_output ]; then
 	mkdir $dir/temp_output
 fi
 

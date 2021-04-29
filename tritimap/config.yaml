@@ -78,9 +78,13 @@ abyss:
 # the de novo scaffolds min length. No change needed!
 scaffold:
   minlength: 500
-# how to define bulk specific scaffold(sequence): default is 0.85. No change needed!
-# 0.85: blast percentage of identical matches < 85% AND blast match length / query length < 85%
-scaffold_uniq_percentage: 0.85
+
+bulk_specific:
+  # how to define bulk specific scaffold(sequence). No change needed!
+  # 0.85: blast percentage of identical matches < 85%
+  identical_percentage: 0.85
+  # 0.8: blast match length / query length < 80%
+  length_percentage: 0.85
 
 # de novo scaffolds filter method: Triti-Map/external_region/external_fasta
 # Triti-Map: auto filter by Triti-Map method, don't need external file

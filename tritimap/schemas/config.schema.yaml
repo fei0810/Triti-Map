@@ -99,8 +99,17 @@ properties:
     required:
       - minlength
 
-  scaffold_uniq_percentage:
-    type: number
+  bulk_specific:
+    type: object
+    properties:
+      identical_percentage:
+        type: number
+      length_percentage:
+        type: number
+    required:
+      - identical_percentage
+      - length_percentage
+
   denovo_filter_method:
     description: denovo scaffolds filter method Triti-Map/external_region/external_fasta
     type: string
@@ -122,6 +131,6 @@ required:
   - memory
   - abyss
   - scaffold
-  - scaffold_uniq_percentage
+  - bulk_specific
   - denovo_filter_method
   - blast_database

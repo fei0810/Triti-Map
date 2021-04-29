@@ -28,13 +28,18 @@ dir=$(dirname $input)
 name=$(basename $input | sed 's/fasta//')
 
 #use conda install hmmer
-esl-translate $input > ${dir}/temp.pfam.${name}pep
+esl-translate $input >${dir}/temp.pfam.${name}pep
 
 #use conda install seqkit
 seqkit fx2tab -l -n ${dir}/temp.pfam.${name}pep | tr ' ' '\t' | cut -f 1,2,7 | sort -k2,2 -k3,3nr | awk '{print $0"\t"$2}' | uniq -f 3 | cut -f1-3 | cut -f1 >${dir}/temp.pfam.${name}long.id
 
 echo ${dir}/temp.pfam.${name}pep
 echo ${dir}/temp.pfam.${name}long.id
+
+if [ $(awk 'END{print NR}' ${dir}/temp.pfam.${name}long.id) -gt 10000 ]; then
+	echo "Your function annotation input sequences is more than 10000, please filter sequences first"
+	exit
+fi
 
 seqkit grep -f ${dir}/temp.pfam.${name}long.id ${dir}/temp.pfam.${name}pep >${dir}/temp.pfam.${name}long.pep
 
@@ -64,7 +69,7 @@ cat <(awk 'BEGIN{print "seqid\tDescription\tE-value\tModel"}') ${dir}/temp.pfam.
 
 seqkit grep -f <(cut -f1 ${output1}) $input >${output2}
 
-if [ ! -d $dir/temp_output ];then
+if [ ! -d $dir/temp_output ]; then
 	mkdir $dir/temp_output
 fi
 rm -rf ${dir}/temp_output/temp.pfam.${name}*

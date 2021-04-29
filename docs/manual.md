@@ -258,6 +258,11 @@ To run the Triti-Map main program, you need to modify the parameters in the conf
   - `fisher_p`: No modification is needed, filter the SNP loci of the trait association interval and calculate the pvalue of each locus using fisher test, default is `0.0001`.
   - `min_length`: No modification is needed, the minimum length of the candidate trait association interval. For large genome species such as wheat, the default length is `1000000`(1Mb).
 
+- `bulk_specific`: **Important**, how to define bulk specific scaffold(sequence).
+
+  - `identical_percentage`: blast percentage of identical matches. Default is **0.85**: blast percentage of identical matches need < 85%
+  - `length_percentage`：blast match length / query length. Default is **0.85**: blast match length / query length < 85%
+
 - `merge_lib`: How to handle multiple sets of different ChIP-seq data of the same pool. **The default is `merge`**, i.e. samples are merged first and then assembled to get better results; if dealing with large genomic data such as hexaploid wheat and your server memory is less than 300G, you can modify it to `split`, i.e. each group of data is assembled separately and then merged for subsequent analysis.
 - `memory`: the maximum memory available when assembling transcriptome sequences using SPAdes, `300` means 300G.
 - `denovo_filter_method`: **Important** , the pool-specific sequence filtering method, valid when running `only_assembly` module. Set to `external_region` means user customize filter interval in `region.csv` file; set to `external_fasta` means user use own prepared external fasta sequence as filter database, please refer to Q&A.
