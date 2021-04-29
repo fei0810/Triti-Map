@@ -67,7 +67,7 @@ elif config['module'] == "only_assembly" and config['denovo_filter_method'] == "
         else:
             seq_len = []
             for i in range(len(external_fasta)):
-                print(external_fasta[i].id + ' length is ' + str(len(external_fasta[i].seq)))
+                # print(external_fasta[i].id + ' length is ' + str(len(external_fasta[i].seq)))
                 seq_len.append(len(external_fasta[i].seq))
             if max(seq_len) < 100000:
                 exit('\n\n### ERROR Attention! ###\n\nExternal fasta sequence need longer than 100kb, better longer than 1Mb, please check.\n\n### ERROR Attention! ###\n\n')

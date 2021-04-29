@@ -83,7 +83,7 @@ bulk_specific:
   # how to define bulk specific scaffold(sequence). No change needed!
   # 0.85: blast percentage of identical matches < 85%
   identical_percentage: 0.85
-  # 0.8: blast match length / query length < 80%
+  # 0.85: blast match length / query length < 85%
   length_percentage: 0.85
 
 # de novo scaffolds filter method: Triti-Map/external_region/external_fasta
