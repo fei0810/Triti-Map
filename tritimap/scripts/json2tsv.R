@@ -26,14 +26,20 @@ print(args[1])
 print(args[2])
 
 dat <- jsonlite::fromJSON(txt = args[1])
-info <- do.call(rbind.data.frame, dat["hits"])[3:7]
-detail_list <- lapply(dat[["hits"]][["hit_hsps"]], function(x) x[1, ])
-detail <- do.call(rbind.data.frame, detail_list)[-c(1, 9, 10, 12, 17, 18, 19)]
-suppressWarnings(
-  output <- cbind(unlist(dat["query_def"]), info, detail)
-)
-names(output)[1] <- "seqid"
-output <- output[, c(1, 2, 3, 5, 6, 8, 10, 11, 15, 16, 17, 18)]
-write.table(output, file = args[2], sep = "\t", quote = F, row.names = F)
 
-print("done")
+if (length(dat[["hits"]]) > 0) {
+  info <- do.call(rbind.data.frame, dat["hits"])[3:7]
+  detail_list <- lapply(dat[["hits"]][["hit_hsps"]], function(x) x[1, ])
+  detail <- do.call(rbind.data.frame, detail_list)[-c(1, 9, 10, 12, 17, 18, 19)]
+  suppressWarnings(
+    output <- cbind(unlist(dat["query_def"]), info, detail)
+  )
+  names(output)[1] <- "seqid"
+  output <- output[, c(1, 2, 3, 5, 6, 8, 10, 11, 15, 16, 17, 18)]
+  write.table(output, file = args[2], sep = "\t", quote = F, row.names = F)
+  print("done")
+} else {
+  output <- data.frame()
+  write.table(output, file = args[2], sep = "\t", quote = F, row.names = F)
+  print("No hits")
+}
