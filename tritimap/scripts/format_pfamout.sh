@@ -50,6 +50,7 @@ for j in $(ls ${dir}/temp.pfam.${name}long.pep.split/*.pep); do
 	if [ ! -f "${j}.out.txt" ]; then
 		echo $j
 		python $scanpath --email $email --database pfam --outformat out,sequence --outfile ${j} --sequence $j
+		#TODO Control the number of cycle runs
 		while [ $? -ne 0 ]; do
 			echo "rerun"
 			python $scanpath --email $email --database pfam --outformat out,sequence --outfile ${j} --sequence $j
