@@ -1,5 +1,4 @@
 #!/usr/bin/env sh
-set -e
 ###############################################################################
 #
 # Author contact:
@@ -48,10 +47,16 @@ echo ${dir}/temp.pfam.${name}long.pep
 seqkit split -s 1 ${dir}/temp.pfam.${name}long.pep
 
 for j in $(ls ${dir}/temp.pfam.${name}long.pep.split/*.pep); do
-	echo $j
-	python $scanpath --email $email --database pfam --outformat out,sequence --outfile ${j} --sequence $j
-	echo "pfam ${j} done"
-	shuf -i 2-5 -n1 | xargs sleep
+	if [ ! -f "${j}.out.txt" ]; then
+		echo $j
+		python $scanpath --email $email --database pfam --outformat out,sequence --outfile ${j} --sequence $j
+		while [ $? -ne 0 ]; do
+			echo "rerun"
+			python $scanpath --email $email --database pfam --outformat out,sequence --outfile ${j} --sequence $j
+		done
+		echo "pfam ${j} done"
+		shuf -i 2-5 -n1 | xargs sleep
+	fi
 done
 
 out2tab() {

@@ -1,5 +1,4 @@
 #!/usr/bin/env sh
-set -e
 ###############################################################################
 #
 # Author contact:
@@ -35,10 +34,16 @@ seqkit split -s 1 --out-dir ${dir}/temp.blast.${name}split ${input}
 
 #use EBI API get json resoults
 for j in $(ls ${dir}/temp.blast.${name}split/*.fasta); do
-	echo $j
-	python $blastpath --email $email --stype dna --program blastn --database $database --outformat out,json --outfile ${j} $j
-	echo "blast ${j} done"
-	shuf -i 2-5 -n1 | xargs sleep
+	if [ ! -f "${j}.out.txt" ]; then
+		echo $j
+		python $blastpath --email $email --stype dna --program blastn --database $database --outformat out,json --outfile ${j} $j
+		while [ $? -ne 0 ]; do
+			echo "rerun"
+			python $blastpath --email $email --stype dna --program blastn --database $database --outformat out,json --outfile ${j} $j
+		done
+		echo "blast ${j} done"
+		shuf -i 2-5 -n1 | xargs sleep
+	fi
 done
 
 #json 2 data table
