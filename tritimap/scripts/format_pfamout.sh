@@ -50,10 +50,16 @@ for j in $(ls ${dir}/temp.pfam.${name}long.pep.split/*.pep); do
 	if [ ! -f "${j}.out.txt" ]; then
 		echo $j
 		python $scanpath --email $email --database pfam --outformat out,sequence --outfile ${j} --sequence $j
-		#TODO Control the number of cycle runs
 		while [ $? -ne 0 ]; do
-			echo "rerun"
-			python $scanpath --email $email --database pfam --outformat out,sequence --outfile ${j} --sequence $j
+			k=0
+			while ((++k)); do
+				if ((k > 3)); then
+					echo "pfam ${j} failed"
+					break
+				fi
+				echo "rerun"
+				python $scanpath --email $email --database pfam --outformat out,sequence --outfile ${j} --sequence $j
+			done
 		done
 		echo "pfam ${j} done"
 		shuf -i 2-5 -n1 | xargs sleep

@@ -37,10 +37,16 @@ for j in $(ls ${dir}/temp.blast.${name}split/*.fasta); do
 	if [ ! -f "${j}.out.txt" ]; then
 		echo $j
 		python $blastpath --email $email --stype dna --program blastn --database $database --outformat out,json --outfile ${j} $j
-		#TODO Control the number of cycle runs
 		while [ $? -ne 0 ]; do
-			echo "rerun"
-			python $blastpath --email $email --stype dna --program blastn --database $database --outformat out,json --outfile ${j} $j
+			k=0
+			while ((++k)); do
+				if ((k > 3)); then
+					echo "blast ${j} failed"
+					break
+				fi
+				echo "rerun"
+				python $blastpath --email $email --stype dna --program blastn --database $database --outformat out,json --outfile ${j} $j
+			done
 		done
 		echo "blast ${j} done"
 		shuf -i 2-5 -n1 | xargs sleep
