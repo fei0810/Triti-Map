@@ -1,7 +1,7 @@
 rule CandidateSummary:
     input:
         blastinfo = dir_path+"/07_assembleout/{bulk}_candidate_denovo_blast_anno.txt",
-        pfaminfo = dir_path+"/07_assembleout/{bulk}_candidate_denovo_blast_anno.txt",
+        pfaminfo = dir_path+"/07_assembleout/{bulk}_candidate_denovo_pfam_anno.txt",
         mappinginfo = dir_path+"/07_assembleout/{bulk}_candidate_denovo2ref.info.txt"
     params:
         scriptdir = script_dir
