@@ -57,9 +57,9 @@ You can also use [Triti-Map](https://hub.docker.com/r/fei0810/tritimap) via Dock
 
 ```sh
 # docker pull command
-docker pull fei0810/tritimap:v0.9.5
+docker pull fei0810/tritimap:v0.9.6
 # run docker
-docker run -i -t fei0810/tritimap:v0.9.5 /bin/bash
+docker run -i -t fei0810/tritimap:v0.9.6 /bin/bash
 ```
 
 ### Installing from GitHub
