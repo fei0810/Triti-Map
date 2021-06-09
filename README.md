@@ -1,5 +1,5 @@
 <p align="center">
-    <img width="50%" src="https://kaopubear-1254299507.cos.ap-shanghai.myqcloud.com/picgo/20210401150558.png">
+    <img width="50%" src="https://kaopubear-1254299507.cos.ap-shanghai.myqcloud.com/picgo/20210609205713.png">
 </p>
 
 [![Anaconda-Server Badge](https://anaconda.org/bioconda/tritimap/badges/version.svg)](https://anaconda.org/bioconda/tritimap) [![Anaconda-Server Badge](https://anaconda.org/bioconda/tritimap/badges/latest_release_date.svg)](https://anaconda.org/bioconda/tritimap) [![Anaconda-Server Badge](https://anaconda.org/bioconda/tritimap/badges/downloads.svg)](https://anaconda.org/bioconda/tritimap) [![Docker Pulls](https://img.shields.io/docker/pulls/fei0810/tritimap)](https://hub.docker.com/repository/docker/fei0810/tritimap) ![Anaconda-Server Badge](https://anaconda.org/bioconda/tritimap/badges/license.svg)
