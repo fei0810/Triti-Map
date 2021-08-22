@@ -121,6 +121,13 @@ elif config['maxthreads'] < 10:
 else:
     exit("need set maxthreads")
 
+### max memory ####
+
+if config['memory'] <= 100:
+    star_memory = 100*1000000000
+else:
+    star_memory = config['memory']*1000000000
+
 #### GATK java parameter ####
 
 java_parameter = '--java-options "-Xmx'+str(config['memory'])+"G"+' -Djava.io.tmpdir='+dir_path+'"'

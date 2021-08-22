@@ -7,7 +7,7 @@ with open(join(this_directory, "README.md"), encoding="utf-8") as f:
 
 setuptools.setup(
     name="tritimap",
-    version="0.9.6",
+    version="0.9.7",
     author="Fei Zhao",
     author_email="zhaofei920810@gmail.com",
     url="https://github.com/fei0810/Triti-Map",

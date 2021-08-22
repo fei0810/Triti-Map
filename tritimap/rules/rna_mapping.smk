@@ -21,7 +21,7 @@ rule STAR1Mapping:
     --genomeDir {params.stardir} --readFilesCommand zcat \
     --readFilesIn {input} \
     --outFileNamePrefix {output.dir}/{params.bulk}_{params.bulktype} \
-    --outSAMtype BAM Unsorted --limitBAMsortRAM 10000000000 > {log} 2>&1
+    --outSAMtype BAM Unsorted --limitBAMsortRAM 100000000000 > {log} 2>&1
     """
 
 rule STAR2Mapping:
@@ -31,6 +31,7 @@ rule STAR2Mapping:
     params:
         stardir = config['ref']['STARdir'],
         sharemem = "NoSharedMemory",
+        sort_mem = star_memory,
         bulk  = lambda wildcards: wildcards.bulk,
         bulktype = lambda wildcards: wildcards.bulktype
     output:
@@ -45,7 +46,7 @@ rule STAR2Mapping:
     --genomeDir {params.stardir} --readFilesCommand zcat \
     --readFilesIn {input.fq} \
     --outFileNamePrefix {output.dir}/{params.bulk}_{params.bulktype} \
-    --outSAMtype BAM SortedByCoordinate --limitBAMsortRAM 10000000000 \
+    --outSAMtype BAM SortedByCoordinate --limitBAMsortRAM {params.sort_mem} \
     --sjdbFileChrStartEnd {input.sj} \
     --outReadsUnmapped Fastx > {log} 2>&1 ;
     samtools index -c {output.step2bam}

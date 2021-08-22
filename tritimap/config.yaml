@@ -70,7 +70,7 @@ snpindex:
 # If your chip-seq data have multiple histone modification types, option 'split' is recommended when the server memory is less than 300G.
 # merge_lib option: merge/split
 merge_lib: merge
-# the memory(G) spades software can use when assemble RNA-seq data
+# the memory(G) spades and STAR software can use when assemble and mapping RNA-seq data
 memory: 400
 # the kmer abyss software can use when assemble ChIP-seq data, 90 is recommended. No change needed!
 abyss:
