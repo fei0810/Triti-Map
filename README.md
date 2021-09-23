@@ -186,13 +186,19 @@ The platform can perform various analyses, including SNP annotation and visual d
 
 ### Author/Support
 
-Fei Zhao zhaofei920810@gmail.com
+Fei Zhao (zhaofei920810@gmail.com)
 
 Lab Home Page：http://bioinfo.cemps.ac.cn/zhanglab/
 
 Issues can be raised at: https://github.com/fei0810/Triti-Map/issues
 
 We also encourage you to contribute to TriTi-Map! To fix bugs or add new features you need to create a Pull Request.
+
+### Maintainer
+
+Fei Zhao (zhaofei920810@gmail.com)
+
+Shilong Tian (tianshilong@cemps.ac.cn)
 
 ### Acknowledgements
 
