@@ -1,7 +1,7 @@
 ## Introduction
 
 <p align="center">
-    <img width="50%" src="https://kaopubear-1254299507.cos.ap-shanghai.myqcloud.com/picgo/20210401150558.png">
+    <img width="50%" src="https://kaopubear-1254299507.file.myqcloud.com/picgo/20210401150558.png">
 </p>
 
 **[Triti-Map](https://github.com/fei0810/Triti-Map)** is a Snakemake-based pipeline for gene mapping in Triticeae, which contains a suite of user-friendly computational packages and web-interface integrating multi-omics data from Triticeae species including genomic, epigenomic, evolutionary and homologous information.
@@ -21,13 +21,13 @@ Web-based Annotation Module is an [online analysis platform](http://bioinfo.cemp
 <h3 align="center">Triti-Map workflow overview</h3>
 
 <p align="center">
-    <img width="80%" src="https://kaopubear-1254299507.cos.ap-shanghai.myqcloud.com/picgo/20210330151508.png">
+    <img width="80%" src="https://kaopubear-1254299507.file.myqcloud.com/picgo/20210330151508.png">
 </p>
 
 Triti-Map ptimization steps to address specific challenges of Triticeae gene-mapping
 
 <p align="center">
-    <img width="80%" src="https://kaopubear-1254299507.cos.ap-shanghai.myqcloud.com/picgo/20210330151509.png">
+    <img width="80%" src="https://kaopubear-1254299507.file.myqcloud.com/picgo/20210330151509.png">
 </p>
 
 ## Author information
@@ -337,7 +337,7 @@ You can create a visualization of the DAG using flag `--dag` and the `dot` comma
 tritimap run -j 30 -n all --dag | dot -Tpdf > tritimap.dag.pdf
 ```
 
-![](https://kaopubear-1254299507.cos.ap-shanghai.myqcloud.com/picgo/20210401162907.png)
+![](https://kaopubear-1254299507.file.myqcloud.com/picgo/20210401162907.png)
 
 `tritimap run --help` show help message:
 
@@ -468,19 +468,19 @@ Left to right: chromosome, SNP postion, REF , ALT, pool A Ref number, pool A ALT
 
 **All chromosome Delta SNPindex plot**
 
-![](https://kaopubear-1254299507.cos.ap-shanghai.myqcloud.com/picgo/20210310150108.png)
+![](https://kaopubear-1254299507.file.myqcloud.com/picgo/20210310150108.png)
 
 X: Chromosome, Y:Delta SNPindex. The blue line indicates the 99% confidence interval calculated by QTLseqR corresponding to the Delta SNPindex value. The gray dots indicate that the corresponding SNP is below this value, and the black dots indicate that the corresponding SNP is above this value.
 
 **All chromosome SNP count plot**
 
-![](https://kaopubear-1254299507.cos.ap-shanghai.myqcloud.com/picgo/20210310150210.png)
+![](https://kaopubear-1254299507.file.myqcloud.com/picgo/20210310150210.png)
 
 X: Chromosome, Y:SNP count.
 
 **Candidate interval Delta SNPindex plot**
 
-![](https://kaopubear-1254299507.cos.ap-shanghai.myqcloud.com/picgo/20210401170136.png)
+![](https://kaopubear-1254299507.file.myqcloud.com/picgo/20210401170136.png)
 
 The blue line indicates the 99% confidence interval calculated by QTLseqR corresponding to the Delta SNPindex value. The shaded area indicates the trait-related interval.
 
@@ -559,7 +559,7 @@ The platform can perform various analyses, including SNP annotation and visual d
 
 Functional diagram of Triti-Map Web-based Annotation Platform
 
-![](https://kaopubear-1254299507.cos.ap-shanghai.myqcloud.com/picgo/20210411112445.png)
+![](https://kaopubear-1254299507.file.myqcloud.com/picgo/20210411112445.png)
 
 ## Support
 

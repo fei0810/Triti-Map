@@ -1,5 +1,5 @@
 <p align="center">
-    <img width="50%" src="https://kaopubear-1254299507.cos.ap-shanghai.myqcloud.com/picgo/20210609205713.png">
+    <img width="50%" src="https://kaopubear-1254299507.file.myqcloud.com/picgo/20210609205713.png">
 </p>
 
 [![Anaconda-Server Badge](https://anaconda.org/bioconda/tritimap/badges/version.svg)](https://anaconda.org/bioconda/tritimap) [![Anaconda-Server Badge](https://anaconda.org/bioconda/tritimap/badges/latest_release_date.svg)](https://anaconda.org/bioconda/tritimap) [![Anaconda-Server Badge](https://anaconda.org/bioconda/tritimap/badges/downloads.svg)](https://anaconda.org/bioconda/tritimap) [![Docker Pulls](https://img.shields.io/docker/pulls/fei0810/tritimap)](https://hub.docker.com/repository/docker/fei0810/tritimap) ![Anaconda-Server Badge](https://anaconda.org/bioconda/tritimap/badges/license.svg)
@@ -13,13 +13,13 @@
 <h3 align="center">Triti-Map workflow overview</h3>
 
 <p align="center">
-    <img width="80%" src="https://kaopubear-1254299507.cos.ap-shanghai.myqcloud.com/picgo/20210330151508.png">
+    <img width="80%" src="https://kaopubear-1254299507.file.myqcloud.com/picgo/20210330151508.png">
 </p>
 
 Triti-Map ptimization steps to address specific challenges of Triticeae gene-mapping
 
 <p align="center">
-    <img width="80%" src="https://kaopubear-1254299507.cos.ap-shanghai.myqcloud.com/picgo/20210330151509.png">
+    <img width="80%" src="https://kaopubear-1254299507.file.myqcloud.com/picgo/20210330151509.png">
 </p>
 
 ## Getting Started with Triti-Map
@@ -174,7 +174,7 @@ A complete catalog of Triti-Map results is shown below.
 
 The platform can perform various analyses, including SNP annotation and visual display, homologous gene analysis, collinearity analysis, and new sequence function annotation, providing richer reference information for Triticeae gene mapping.
 
-![](https://kaopubear-1254299507.cos.ap-shanghai.myqcloud.com/picgo/20210411112445.png)
+![](https://kaopubear-1254299507.file.myqcloud.com/picgo/20210411112445.png)
 
 ## More
 

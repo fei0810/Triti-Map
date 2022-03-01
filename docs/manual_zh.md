@@ -3,7 +3,7 @@
 ## Triti-Map 介绍
 
 <p align="center">
-    <img src="https://kaopubear-1254299507.cos.ap-shanghai.myqcloud.com/picgo/20210401150558.png">
+    <img src="https://kaopubear-1254299507.file.myqcloud.com/picgo/20210401150558.png">
 </p>
 
 [Triti-Map](https://github.com/fei0810/Triti-Map) 是一套结合多组学 BSA 定位分析和*de novo*序列组装的小麦族功能基因定位分析流程。通过 [Snakemake](https://snakemake.github.io/) 开发，共包含三个分析模块：
@@ -20,11 +20,11 @@ Web-based Annotation Module 为[在线分析平台](http://bioinfo.cemps.ac.cn/t
 
 ### Triti-Map 分析流程图
 
-![](https://kaopubear-1254299507.cos.ap-shanghai.myqcloud.com/picgo/20210330151508.png)
+![](https://kaopubear-1254299507.file.myqcloud.com/picgo/20210330151508.png)
 
 ### Triti-Map 具体分析方法和针对性优化内容
 
-![](https://kaopubear-1254299507.cos.ap-shanghai.myqcloud.com/picgo/20210330151509.png)
+![](https://kaopubear-1254299507.file.myqcloud.com/picgo/20210330151509.png)
 
 ## 作者信息
 
@@ -349,7 +349,7 @@ tritimap run -j 30 -n all --dag | dot -Tpdf > tritimap.dag.pdf
 
 可以生成类似的下面的流程图。
 
-![](https://kaopubear-1254299507.cos.ap-shanghai.myqcloud.com/picgo/20210401162907.png)
+![](https://kaopubear-1254299507.file.myqcloud.com/picgo/20210401162907.png)
 
 通过`tritimap run --help`可以查看帮助信息。
 
@@ -535,19 +535,19 @@ seqid	hit_db	hit_id	hit_desc	hit_url	hsp_bit_score	hsp_align_len	hsp_identity	hs
 
 **全基因组 Delta SNPindex**
 
-![](https://kaopubear-1254299507.cos.ap-shanghai.myqcloud.com/picgo/20210310150108.png)
+![](https://kaopubear-1254299507.file.myqcloud.com/picgo/20210310150108.png)
 
 纵坐标表示`Delta SNPindex`，横坐标染色体位置。蓝色线表示 QTLseqR 计算得出的 99% 置信区间对应 Delta SNPindex 数值，灰颜色点表示对应的 SNP 低于此值，黑颜色的点表示对应的 SNP 高于此值。
 
 **全基因组 SNP count**
 
-![](https://kaopubear-1254299507.cos.ap-shanghai.myqcloud.com/picgo/20210310150210.png)
+![](https://kaopubear-1254299507.file.myqcloud.com/picgo/20210310150210.png)
 
 纵坐标表示 SNPcount,横坐标表示染色体位置。
 
 **性状关联区间局部 Delta SNPindex** （每个性状关联区间都会单独生成对应的可视化结果）
 
-![](https://kaopubear-1254299507.cos.ap-shanghai.myqcloud.com/picgo/20210401170136.png)
+![](https://kaopubear-1254299507.file.myqcloud.com/picgo/20210401170136.png)
 
 该图为全基因组 Delta SNPindex 的性状关联区间局部放大图。其中纵坐标表示`Delta SNPindex`，横坐标染色体位置，蓝色线表示 QTLseqR 计算得出的 99% 置信区间对应 Delta SNPindex 数值。红色部分表示该位置为计算出的性状关联区间。
 
@@ -557,7 +557,7 @@ Triti-Map 的上游分析结果可以配套[在线分析平台](http://bioinfo.c
 
 **在线分析平台主要功能示意图**
 
-![](https://kaopubear-1254299507.cos.ap-shanghai.myqcloud.com/picgo/20210401170258.png)
+![](https://kaopubear-1254299507.file.myqcloud.com/picgo/20210401170258.png)
 
 ## 支持
 
