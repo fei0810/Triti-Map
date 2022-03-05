@@ -184,6 +184,10 @@ The platform can perform various analyses, including SNP annotation and visual d
 
 ### Citing
 
+Zhao F, Tian S, Li Z, et al. Utility of Triti-Map for bulk-segregated mapping of causal genes and regulatory elements in Triticeae[J]. Plant Communications, 2022: 100304.
+
+https://doi.org/10.1016/j.xplc.2022.100304
+
 ### Author/Support
 
 Fei Zhao (zhaofei920810@gmail.com)
